@@ -37,6 +37,7 @@ var market = gold + "╔══════════════════�
 	gold + "║" + reset + "   " + red + bold + "5." + reset + " " + white + "Grenade fumigène" + reset + "             " + green + bold + "22 po" + reset + " " + gold + "║" + reset + "\n" +
 	gold + "║" + reset + "   " + red + bold + "6." + reset + " " + white + "Grenade incendiaire" + reset + "          " + green + bold + "48 po" + reset + " " + gold + "║" + reset + "\n" +
 	gold + "║" + reset + "   " + red + bold + "7." + reset + " " + white + "Grenade paralysante" + reset + "          " + green + bold + "35 po" + reset + " " + gold + "║" + reset + "\n" +
+	gold + "║" + reset + "   " + red + bold + "8." + reset + " " + white + "EXIT" + reset + "          " + green + bold + "35 po" + reset + " " + gold + "║" + reset + "\n" +
 	gold + "║" + reset + "                                         " + gold + "║" + reset + "\n" +
 	gold + "║" + reset + gray + italic + "  › choisis un numéro pour acheter" + reset + "       " + gold + "║" + reset + "\n" +
 	gold + "╚═════════════════════════════════════════╝" + reset + "\n"

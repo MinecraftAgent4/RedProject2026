@@ -19,10 +19,13 @@ func main() {
 		if statue == "1" {
 			perso.displayInfo()
 		}
+		if statue == "2" {
+			fmt.Println(market)
+		}
 		if statue == "5" {
 			perso.accessInventory()
 		}
-		if statue == "2" || statue == "3" || statue == "4" {
+		if statue == "3" || statue == "4" {
 			fmt.Println("Cette fonctionnalite n'est pas encore disponible.")
 		}
 		if statue != "1" && statue != "2" && statue != "3" && statue != "4" && statue != "5" && statue != "6" {
