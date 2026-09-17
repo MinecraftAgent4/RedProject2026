@@ -12,7 +12,9 @@ func main() {
 	for statue != "EXIT" {
 		fmt.Println(menu)
 		fmt.Print("Choix : ")
-		fmt.Scanln(&statue)
+		if _, err := fmt.Scanln(&statue); err != nil {
+			break
+		}
 
 		if statue == "1" {
 			perso.displayInfo()
