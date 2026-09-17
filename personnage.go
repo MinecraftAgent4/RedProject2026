@@ -1,24 +1,6 @@
-<<<<<<< HEAD
 package main
 
 import "fmt"
-
-type Character struct {
-	nom         string
-	classe      string
-	niveau      int
-	pv_total    int
-	pv_actuelle int
-	inventaire  []string
-}
-
-func (perso Character) accessInventory() {
-	for _,i := range perso.inventaire {
-		fmt.Println("- "+i)
-	}
-}
-=======
-package main
 
 type Character struct {
 	nom         string
@@ -49,4 +31,9 @@ func (c *Character) TakePot(p potion) {
 	}
 }
 }
->>>>>>> a19c4a8 (potion)
+
+func (perso Character) accessInventory() {
+	for _,i := range perso.inventaire {
+		fmt.Println("- "+i)
+	}
+}
