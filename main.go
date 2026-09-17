@@ -7,7 +7,16 @@ func initCharacter(nom string, classe string, niveau int, pv_total int, pv_actue
 }
 
 func main() {
+	statue := "menu"
 	perso := initCharacter("teste", "netrunner", 1, 20, 20, []string{"weapon#1", "helmet", "boots"})
-	fmt.Println(perso)
-	perso.accessInventory()
+	for statue == "EXIT" {
+		fmt.Println(statue)
+		if statue == "perso" {
+			perso.displayInfo()
+		}
+		if statue == "inventaire" {
+			perso.accessInventory()
+		}
+	}
+
 }
