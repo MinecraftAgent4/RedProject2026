@@ -20,7 +20,7 @@ var menu = gold + "╔═══════════════════�
 	gold + "║" + reset + "   " + red + bold + "3." + reset + " " + white + "Charcudoc" + reset + "                     " + gold + "║" + reset + "\n" +
 	gold + "║" + reset + "   " + red + bold + "4." + reset + " " + white + "Guerre de gang" + reset + "                " + gold + "║" + reset + "\n" +
 	gold + "║" + reset + "   " + red + bold + "5." + reset + " " + white + "Inventaire" + reset + "                    " + gold + "║" + reset + "\n" +
-	gold + "║" + reset + "   " + red + bold + "6." + reset + " " + white + "EXIT" + reset + "                     " + gold + "║" + reset + "\n" +
+	gold + "║" + reset + "   " + red + bold + "6." + reset + " " + white + "EXIT" + reset + "                          " + gold + "║" + reset + "\n" +
 	gold + "║" + reset + "                                    " + gold + "║" + reset + "\n" +
 	gold + "║" + reset + gray + italic + "  › choisis un numéro pour agir" + reset + "     " + gold + "║" + reset + "\n" +
 	gold + "╚════════════════════════════════════╝" + reset + "\n"
