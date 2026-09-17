@@ -31,9 +31,12 @@ func (c *Character) TakePot(p potion) {
 	}
 }
 }
+<<<<<<< HEAD
 
 func (perso Character) accessInventory() {
 	for _,i := range perso.inventaire {
 		fmt.Println("- "+i)
 	}
 }
+=======
+>>>>>>> a19c4a8 (potion)
