@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 type Character struct {
 	nom         string
 	classe      string
@@ -26,6 +28,12 @@ func (c *Character) TakePot(p potion) {
 
 			c.inventaire = append(c.inventaire[:i], c.inventaire[i+1:]...)
 			return
+		}
 	}
 }
+
+func (perso Character) accessInventory() {
+	for _, i := range perso.inventaire {
+		fmt.Println("- " + i)
+	}
 }
