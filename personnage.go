@@ -37,3 +37,14 @@ func (perso Character) accessInventory() {
 		fmt.Println("- " + i)
 	}
 }
+
+func (c *Character) displayInfo() {
+	fmt.Println(
+		"nom : ", c.nom,
+		'\n',
+		"classe : ", c.classe,
+		'\n',
+		"PV : ", c.pv_actuelle, "/", c.pv_total,
+		'\n',
+	)
+}
