@@ -1,6 +1,6 @@
 package main
 
-type Player struct {
+type Character struct {
 	nom         string
 	classe      string
 	niveau      int
