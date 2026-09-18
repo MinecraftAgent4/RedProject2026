@@ -6,9 +6,53 @@ func initCharacter(nom string, classe string, niveau int, pv_total int, pv_actue
 	return Character{nom, classe, niveau, pv_total, pv_actuelle, inventaire}
 }
 
+func création_perso() Character {
+	classe := []string{"netrunner", "merc", "cyberpsycho"}
+	classe_choisie := ""
+	classeValide := false
+
+	for !classeValide {
+		fmt.Println("Choisis une classe :")
+		fmt.Println("1 -", classe[0])
+		fmt.Println("2 -", classe[1])
+		fmt.Println("3 -", classe[2])
+		fmt.Scanln(&classe_choisie)
+
+		if classe_choisie == "1" {
+			classe_choisie = classe[0]
+			classeValide = true
+		}
+		if classe_choisie == "2" {
+			classe_choisie = classe[1]
+			classeValide = true
+		}
+		if classe_choisie == "3" {
+			classe_choisie = classe[2]
+			classeValide = true
+		}
+		if !classeValide {
+			fmt.Println("Choix invalide.")
+		}
+	}
+
+	pv := 120
+	if classe_choisie == "netrunner" {
+		pv = 80
+	}
+	if classe_choisie == "merc" {
+		pv = 100
+	}
+
+	nom := ""
+	fmt.Print("Entre ton nom : ")
+	fmt.Scanln(&nom)
+
+	return initCharacter(nom, classe_choisie, 1, pv, pv, []Object{})
+}
+
 func main() {
 	statue := "menu"
-	perso := initCharacter("teste", "netrunner", 1, 20, 20, []Object{{nom: "weapon#1"}, {nom: "helmet"}, {nom: "boots"}})
+	perso := création_perso()
 	for statue != "EXIT" {
 		fmt.Println(menu)
 		fmt.Print("Choix : ")
