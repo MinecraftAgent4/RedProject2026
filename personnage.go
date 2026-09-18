@@ -50,7 +50,7 @@ func (c *Character) displayInfo() {
 }
 
 func (c *Character) isDead() {
-	if pv_actuelle <= 0 {
-		AddPV(pv_total / 2)
+	if c.pv_actuelle <= 0 {
+		c.AddPV(c.pv_total / 2)
 	}
 }
