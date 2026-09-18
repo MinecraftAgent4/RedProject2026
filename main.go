@@ -3,7 +3,14 @@ package main
 import "fmt"
 
 func initCharacter(nom string, classe string, niveau int, pv_total int, pv_actuelle int, inventaire []Object) Character {
-	return Character{nom, classe, niveau, pv_total, pv_actuelle, inventaire}
+	return Character{
+		nom:         nom,
+		classe:      classe,
+		niveau:      niveau,
+		pv_total:    pv_total,
+		pv_actuelle: pv_actuelle,
+		inventaire:  inventaire,
+	}
 }
 
 func création_perso() Character {
