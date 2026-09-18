@@ -11,6 +11,10 @@ type Character struct {
 	inventaire  []Object
 }
 
+func (c *Character) AddInventory(object string) {
+	c.inventaire = append(c.inventaire, Object{nom: object})
+}
+
 func (c *Character) AddPV(x int) {
 	c.pv_actuelle += x
 
@@ -21,7 +25,7 @@ func (c *Character) AddPV(x int) {
 
 func (c *Character) TakePot(p potion) {
 	for i, objet := range c.inventaire {
-		if objet == p.nom {
+		if objet.nom == p.nom {
 			if p.effet != nil {
 				p.effet()
 			}
@@ -34,7 +38,7 @@ func (c *Character) TakePot(p potion) {
 
 func (perso Character) accessInventory() {
 	for _, i := range perso.inventaire {
-		fmt.Println("- " + i)
+		fmt.Println("- " + i.nom)
 	}
 }
 
@@ -50,11 +54,10 @@ func (c *Character) displayInfo() {
 }
 
 func (c *Character) isDead() {
-	if pv_actuelle <= 0 {
-		AddPV(pv_total / 2)
+	if c.pv_actuelle <= 0 {
+		c.AddPV(c.pv_total / 2)
 	}
 }
-
 func (c *Character) inventoryLimit() bool {
 	if len(c.inventaire) == 10 {
 		return false
