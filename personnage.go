@@ -9,7 +9,15 @@ type Character struct {
 	pv_total    int
 	pv_actuelle int
 	inventaire  []Object
+	maxslots    int
 	money       int
+	equipe      equipement
+}
+
+type equipement struct {
+	helmet []Object
+	torso  []Object
+	boots  []Object
 }
 
 func (c *Character) AddInventory(object Object) {
@@ -27,9 +35,8 @@ func (c *Character) AddPV(x int) {
 func (c *Character) TakePot(p potion) {
 	for i, objet := range c.inventaire {
 		if objet.nom == p.nom {
-			c.AddPV(p.soin)
-			if p.effet != nil {
-				p.effet()
+			if objet.effect != nil {
+				objet.effect(c)
 			}
 
 			c.inventaire = append(c.inventaire[:i], c.inventaire[i+1:]...)
@@ -54,7 +61,7 @@ func (c *Character) isDead() {
 	}
 }
 func (c *Character) inventoryLimit() bool {
-	if len(c.inventaire) == 10 {
+	if len(c.inventaire) == c.maxslots {
 		return false
 	}
 	return true

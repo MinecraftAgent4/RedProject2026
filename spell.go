@@ -1,10 +1,14 @@
 package main
 
 type Spell struct {
-	name string
-	effect func()
+	name   string
+	effect func(*Character)
 }
 
 func createSpellBook(spell Spell, price int) Object {
-	return 	Object{"Livre de Sort : " + spell.name, price, spell.effect}
+	return Object{
+		nom:    "Livre de Sort : " + spell.name,
+		prix:   price,
+		effect: spell.effect,
+	}
 }

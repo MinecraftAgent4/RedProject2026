@@ -3,7 +3,7 @@ package main
 type Object struct {
 	nom    string
 	prix   int
-	effect func()
+	effect func(*Character)
 }
 
 type Market struct {
@@ -12,9 +12,9 @@ type Market struct {
 
 func initMarket() Market {
 	market := Market{}
-	market.add_object(12, "steampack de basse qualité", nil)
-	market.add_object(28, "steampack", nil)
-	market.add_object(55, "steampack de grande qualité", nil)
+	market.add_potion(12, potion{nom: "steampack de basse qualité", effet: func(c *Character) { c.AddPV(20) }})
+	market.add_potion(28, potion{nom: "steampack", effet: func(c *Character) { c.AddPV(50) }})
+	market.add_potion(55, potion{nom: "steampack de grande qualité", effet: func(c *Character) { c.AddPV(80) }})
 	market.add_object(40, "Grenade à fragmentation", nil)
 	market.add_object(22, "Grenade fumigène", nil)
 	market.add_object(48, "Grenade incendiaire", nil)
@@ -22,7 +22,7 @@ func initMarket() Market {
 	return market
 }
 
-func (m *Market) add_object(price int, object string, effet func()) {
+func (m *Market) add_object(price int, object string, effet func(*Character)) {
 	m.liste_des_objet = append(m.liste_des_objet, Object{nom: object, prix: price, effect: effet})
 }
 

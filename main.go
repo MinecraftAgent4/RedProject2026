@@ -10,6 +10,7 @@ func initCharacter(nom string, classe string, niveau int, pv_total int, pv_actue
 		pv_total:    pv_total,
 		pv_actuelle: pv_actuelle,
 		inventaire:  inventaire,
+		maxslots:    10,
 		money:       money,
 	}
 }
