@@ -8,7 +8,7 @@ type Character struct {
 	niveau      int
 	pv_total    int
 	pv_actuelle int
-	inventaire  []string
+	inventaire  []Object
 }
 
 func (c *Character) AddPV(x int) {
@@ -53,4 +53,11 @@ func (c *Character) isDead() {
 	if pv_actuelle <= 0 {
 		AddPV(pv_total / 2)
 	}
+}
+
+func (c *Character) inventoryLimit() bool {
+	if len(c.inventaire) == 10 {
+		return false
+	}
+	return true
 }
