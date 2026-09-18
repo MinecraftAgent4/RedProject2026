@@ -1,19 +1,15 @@
 package main
 
-type Object struct {
-	nom    string
-	prix   int
-	effect func()
-}
-
 type Market struct {
-	liste_des_objet []Object
+	liste_offres []Trade
 }
 
-func (m *Market) add_object(price int, object string, effet func()) {
-	m.liste_des_objet = append(m.liste_des_objet, Object{nom: object, prix: price, effect: effet})
+type Trade struct {
+	result Object
+	price int
+	ingredients []Object
 }
 
-func (m *Market) add_potion(price int, pot potion) {
-	m.add_object(price, pot.nom, pot.effet)
+func (m *Market) add_object(object Object, price int, ingredients [Object]) {
+	m.liste_offres = append(m.liste_offres, Trade{object, price, ingredients})
 }

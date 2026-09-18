@@ -12,14 +12,17 @@ type Character struct {
 	money       int
 	equipe equipement
 }
+
 type equipement struct {
-	helmet []Object
-	torso []Object
-	boots []Object
+	helmet Armure
+	torso Armure
+	boots Armure
 }
 
-func (c *Character) AddInventory(object string) {
-	c.inventaire = append(c.inventaire, Object{nom: object})
+func (c *Character) GiveItem(object Object) {
+	if c.inventoryLimit() {
+		c.inventaire = append(c.inventaire, object)
+	}
 }
 
 func (c *Character) AddPV(x int) {
@@ -30,11 +33,11 @@ func (c *Character) AddPV(x int) {
 	}
 }
 
-func (c *Character) TakePot(p potion) {
+func (c *Character) TakePot(p Potion) {
 	for i, objet := range c.inventaire {
-		if objet.nom == p.nom {
-			if p.effet != nil {
-				p.effet()
+		if objet.Nom() == p.nom {
+			if p.effect != nil {
+				p.effect()
 			}
 
 			c.inventaire = append(c.inventaire[:i], c.inventaire[i+1:]...)
@@ -45,11 +48,11 @@ func (c *Character) TakePot(p potion) {
 
 func (perso Character) accessInventory() {
 	for _, i := range perso.inventaire {
-		fmt.Println("- " + i.nom)
+		fmt.Println("- " + i.Nom())
 	}
 }
 
-func (c *Character) displayInfo() {
+func (c Character) displayInfo() {
 	fmt.Println(
 		"nom : ", c.nom,
 		'\n',
@@ -65,8 +68,8 @@ func (c *Character) isDead() {
 		c.AddPV(c.pv_total / 2)
 	}
 }
-func (c *Character) inventoryLimit() bool {
-	if len(c.inventaire) == 10 {
+func (c Character) inventoryLimit() bool {
+	if len(c.inventaire) >= 10 {
 		return false
 	}
 	return true

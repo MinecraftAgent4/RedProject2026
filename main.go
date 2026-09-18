@@ -76,25 +76,25 @@ func main() {
 			fmt.Print("Choix : ")
 			if _, err := fmt.Scanln(&choixMarket); err == nil {
 				if choixMarket == 1 {
-					perso.AddInventory("steampack de basse qualité")
+					perso.GiveItem(Item{"steampack de basse qualité"})
 				}
 				if choixMarket == 2 {
-					perso.AddInventory("steampack")
+					perso.GiveItem(Item{"steampack"})
 				}
 				if choixMarket == 3 {
-					perso.AddInventory("steampack de grande qualité")
+					perso.GiveItem(Item{"steampack de grande qualité"})
 				}
 				if choixMarket == 4 {
-					perso.AddInventory("Grenade à fragmentation")
+					perso.GiveItem(Item{"Grenade à fragmentation"})
 				}
 				if choixMarket == 5 {
-					perso.AddInventory("Grenade fumigène")
+					perso.GiveItem(Item{"Grenade fumigène"})
 				}
 				if choixMarket == 6 {
-					perso.AddInventory("Grenade incendiaire")
+					perso.GiveItem(Item{"Grenade incendiaire"})
 				}
 				if choixMarket == 7 {
-					perso.AddInventory("Grenade paralysante")
+					perso.GiveItem(Item{"Grenade paralysante"})
 				}
 				if choixMarket == 8 {
 					continue
