@@ -10,6 +10,12 @@ type Character struct {
 	pv_actuelle int
 	inventaire  []Object
 	money       int
+	equipe equipement
+}
+type equipement struct {
+	helmet []Object
+	torso []Object
+	boots []Object
 }
 
 func (c *Character) AddInventory(object string) {
