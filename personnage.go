@@ -11,17 +11,19 @@ type Character struct {
 	inventaire  []Object
 	maxslots    int
 	money       int
-	equipe      equipement
+	equipe equipement
 }
 
 type equipement struct {
-	helmet []Object
-	torso  []Object
-	boots  []Object
+	helmet Armure
+	torso Armure
+	boots Armure
 }
 
-func (c *Character) AddInventory(object Object) {
-	c.inventaire = append(c.inventaire, object)
+func (c *Character) GiveItem(object Object) {
+	if c.inventoryLimit() {
+		c.inventaire = append(c.inventaire, object)
+	}
 }
 
 func (c *Character) AddPV(x int) {
@@ -32,11 +34,11 @@ func (c *Character) AddPV(x int) {
 	}
 }
 
-func (c *Character) TakePot(p potion) {
+func (c *Character) TakePot(p Potion) {
 	for i, objet := range c.inventaire {
-		if objet.nom == p.nom {
-			if objet.effect != nil {
-				objet.effect(c)
+		if objet.Nom() == p.nom {
+			if p.effect != nil {
+				p.effect()
 			}
 
 			c.inventaire = append(c.inventaire[:i], c.inventaire[i+1:]...)
@@ -47,7 +49,7 @@ func (c *Character) TakePot(p potion) {
 
 func (perso Character) accessInventory() {
 	for _, i := range perso.inventaire {
-		fmt.Println("- " + i.nom)
+		fmt.Println("- " + i.Nom())
 	}
 }
 
