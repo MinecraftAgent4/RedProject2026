@@ -9,6 +9,7 @@ type Character struct {
 	pv_total    int
 	pv_actuelle int
 	inventaire  []Object
+	money       int
 }
 
 func (c *Character) AddInventory(object string) {
