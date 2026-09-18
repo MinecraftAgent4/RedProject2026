@@ -9,6 +9,7 @@ type Character struct {
 	pv_total    int
 	pv_actuelle int
 	inventaire  []Object
+	maxslots    int
 	money       int
 	equipe equipement
 }
@@ -65,9 +66,13 @@ func (c *Character) isDead() {
 		c.AddPV(c.pv_total / 2)
 	}
 }
+
 func (c *Character) inventoryLimit() bool {
-	if len(c.inventaire) == 10 {
+	if len(c.inventaire) == maxslots {
 		return false
 	}
 	return true
+}
+func (c *Character) upgradeInventorySlot() {
+	c.maxslots += 10
 }
