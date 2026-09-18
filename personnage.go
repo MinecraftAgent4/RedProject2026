@@ -12,8 +12,8 @@ type Character struct {
 	money       int
 }
 
-func (c *Character) AddInventory(object string) {
-	c.inventaire = append(c.inventaire, Object{nom: object})
+func (c *Character) AddInventory(object Object) {
+	c.inventaire = append(c.inventaire, object)
 }
 
 func (c *Character) AddPV(x int) {
@@ -27,6 +27,7 @@ func (c *Character) AddPV(x int) {
 func (c *Character) TakePot(p potion) {
 	for i, objet := range c.inventaire {
 		if objet.nom == p.nom {
+			c.AddPV(p.soin)
 			if p.effet != nil {
 				p.effet()
 			}
@@ -44,14 +45,7 @@ func (perso Character) accessInventory() {
 }
 
 func (c *Character) displayInfo() {
-	fmt.Println(
-		"nom : ", c.nom,
-		'\n',
-		"classe : ", c.classe,
-		'\n',
-		"PV : ", c.pv_actuelle, "/", c.pv_total,
-		'\n',
-	)
+	fmt.Printf("nom : %s\nclasse : %s\nPV : %d / %d\n", c.nom, c.classe, c.pv_actuelle, c.pv_total)
 }
 
 func (c *Character) isDead() {

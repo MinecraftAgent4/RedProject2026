@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 
-func initCharacter(nom string, classe string, niveau int, pv_total int, pv_actuelle int, inventaire []Object) Character {
+func initCharacter(nom string, classe string, niveau int, pv_total int, pv_actuelle int, inventaire []Object, money int) Character {
 	return Character{
 		nom:         nom,
 		classe:      classe,
@@ -10,6 +10,7 @@ func initCharacter(nom string, classe string, niveau int, pv_total int, pv_actue
 		pv_total:    pv_total,
 		pv_actuelle: pv_actuelle,
 		inventaire:  inventaire,
+		money:       money,
 	}
 }
 
@@ -54,12 +55,14 @@ func création_perso() Character {
 	fmt.Print("Entre ton nom : ")
 	fmt.Scanln(&nom)
 
-	return initCharacter(nom, classe_choisie, 1, pv, pv, []Object{})
+	return initCharacter(nom, classe_choisie, 1, pv/2, pv, []Object{}, 100)
 }
 
 func main() {
 	statue := "menu"
 	perso := création_perso()
+	marketObjets := initMarket()
+
 	for statue != "EXIT" {
 		fmt.Println(menu)
 		fmt.Print("Choix : ")
@@ -75,26 +78,12 @@ func main() {
 			var choixMarket int
 			fmt.Print("Choix : ")
 			if _, err := fmt.Scanln(&choixMarket); err == nil {
-				if choixMarket == 1 {
-					perso.AddInventory("steampack de basse qualité")
-				}
-				if choixMarket == 2 {
-					perso.AddInventory("steampack")
-				}
-				if choixMarket == 3 {
-					perso.AddInventory("steampack de grande qualité")
-				}
-				if choixMarket == 4 {
-					perso.AddInventory("Grenade à fragmentation")
-				}
-				if choixMarket == 5 {
-					perso.AddInventory("Grenade fumigène")
-				}
-				if choixMarket == 6 {
-					perso.AddInventory("Grenade incendiaire")
-				}
-				if choixMarket == 7 {
-					perso.AddInventory("Grenade paralysante")
+				if choixMarket >= 1 && choixMarket <= len(marketObjets.liste_des_objet) {
+					if perso.inventoryLimit() {
+						perso.AddInventory(marketObjets.liste_des_objet[choixMarket-1])
+					} else {
+						fmt.Println("Inventaire plein.")
+					}
 				}
 				if choixMarket == 8 {
 					continue
@@ -118,6 +107,5 @@ func main() {
 		}
 	}
 	fmt.Println("Au revoir !")
-	
-	
+
 }
