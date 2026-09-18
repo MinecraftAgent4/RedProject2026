@@ -2,13 +2,17 @@ package main
 
 import "fmt"
 
-func initCharacter(nom string, classe string, niveau int, pv_total int, pv_actuelle int, inventaire []string) Character {
-	return Character{nom, classe, niveau, pv_total, pv_actuelle, inventaire}
+func initCharacter(nom string, classe string, niveau int, pv_total int, pv_actuelle int, inventaire []string, skill []string) Character {
+	return Character{nom, classe, niveau, pv_total, pv_actuelle, inventaire, skill}
 }
 
 func main() {
 	statue := "menu"
-	perso := initCharacter("teste", "netrunner", 1, 20, 20, []string{"weapon#1", "helmet", "boots"})
+	perso := initCharacter("teste", "netrunner", 1, 20, 20, []string{"weapon#1", "helmet", "boots"}, []string{"Coup de poing"})
+	
+	book := createSpellBook(Spell{"Fireball", nil}, 55)
+	fmt.Println(book)
+	
 	for statue != "EXIT" {
 		fmt.Println(menu)
 		fmt.Print("Choix : ")
@@ -36,4 +40,6 @@ func main() {
 		}
 	}
 	fmt.Println("Au revoir !")
+	
+	
 }
