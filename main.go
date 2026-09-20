@@ -75,7 +75,7 @@ func main() {
 			perso.displayInfo()
 		}
 		if statue == "2" {
-			fmt.Println(market)
+			fmt.Println(marketMenu(perso.money))
 			var choixMarket int
 			fmt.Print("Choix : ")
 			if _, err := fmt.Scanln(&choixMarket); err == nil {
@@ -97,7 +97,10 @@ func main() {
 		if statue == "5" {
 			perso.accessInventory()
 		}
-		if statue == "3" || statue == "4" {
+		if statue == "3" {
+			fmt.Println(charcudocMenu())
+		}
+		if statue == "4" {
 			fmt.Println("Cette fonctionnalite n'est pas encore disponible.")
 		}
 		if statue != "1" && statue != "2" && statue != "3" && statue != "4" && statue != "5" && statue != "6" {

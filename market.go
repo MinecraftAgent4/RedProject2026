@@ -5,11 +5,11 @@ type Market struct {
 }
 
 type Trade struct {
-	result Object
-	price int
+	result      Object
+	price       int
 	ingredients []Object
 }
 
-func (m *Market) add_object(object Object, price int, ingredients [Object]) {
+func (m *Market) add_object(object Object, price int, ingredients []Object) {
 	m.liste_offres = append(m.liste_offres, Trade{object, price, ingredients})
 }
