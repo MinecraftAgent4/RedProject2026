@@ -1,12 +1,14 @@
 package main
 
+import "fmt"
+
 type Object interface {
 	Nom() string
 }
 
 type Potion struct {
 	nom    string
-	effect func()
+	effect func(target Entity)
 }
 
 type Arme struct {
@@ -14,17 +16,41 @@ type Arme struct {
 	dmg int
 }
 
-type Armure struct {
-	nom     string
+type Armure interface {
+	Nom() string
+	Defense() int
+}
+
+type Casque struct {
+	nom string
 	defense int
 }
+
+type Plastron struct {
+	nom string
+	defense int
+}
+
+type Bottes struct {
+	nom string
+	defense int
+}
+
+func (a Casque) Nom() string {return a.nom}
+func (a Plastron) Nom() string {return a.nom}
+func (a Bottes) Nom() string {return a.nom}
+func (a Casque) Defense() int {return a.defense}
+func (a Plastron) Defense() int {return a.defense}
+func (a Bottes) Defense() int {return a.defense}
+
+
 
 type Item struct {
 	nom string
 }
 
 type Spell struct {
-	name   string
+	nom string
 	effect func()
 }
 
@@ -40,7 +66,6 @@ type Resource struct {
 
 func (i Potion) Nom() string    { return i.nom }
 func (i Arme) Nom() string      { return i.nom }
-func (i Armure) Nom() string    { return i.nom }
 func (i Item) Nom() string      { return i.nom }
-func (i SpellBook) Nom() string { return "Livre de Sort : " + i.spell.name }
-func (i Resource) Nom() string  { return i.nom }
+func (i SpellBook) Nom() string { return "Livre de Sort : " + i.spell.nom }
+func (i Resource) Nom() string  { return fmt.Sprintf("%s: %d/%d", i.nom, i.quantité, i.quantité_max) }
