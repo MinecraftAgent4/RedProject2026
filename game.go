@@ -21,6 +21,8 @@ func game() {
 	}
 	player := rl.Rectangle{X: 40, Y: 408, Width: 32, Height: 42}
 	playerSpeed := float32(220)
+	velocityY := float32(0)
+	onGround := true
 
 	for !rl.WindowShouldClose() {
 		delta := rl.GetFrameTime()
@@ -30,11 +32,34 @@ func game() {
 		if rl.IsKeyDown(rl.KeyLeft) || rl.IsKeyDown(rl.KeyA) {
 			player.X -= playerSpeed * delta
 		}
+		if rl.IsKeyPressed(rl.KeySpace) && onGround {
+			velocityY = -430
+			onGround = false
+		}
+		velocityY += 1000 * delta
+		player.Y += velocityY * delta
+		onGround = false
+		for _, block := range blocks {
+			if velocityY >= 0 && rl.CheckCollisionRecs(player, block.rect) {
+				previousBottom := player.Y - velocityY*delta + player.Height
+				if previousBottom >= block.rect.Y {
+					player.Y = block.rect.Y - player.Height
+					velocityY = 0
+					onGround = true
+				}
+			}
+		}
 		if player.X < 0 {
 			player.X = 0
 		}
 		if player.X+player.Width > 960 {
 			player.X = 960 - player.Width
+		}
+		if player.Y > 540 {
+			player.X = 40
+			player.Y = 408
+			velocityY = 0
+			onGround = true
 		}
 
 		rl.BeginDrawing()
@@ -44,9 +69,7 @@ func game() {
 			rl.DrawRectangleLinesEx(block.rect, 2, rl.DarkGray)
 		}
 		rl.DrawRectangleRec(player, rl.SkyBlue)
-		rl.DrawCircle(int32(player.X+10), int32(player.Y+13), 3, rl.Black)
-		rl.DrawCircle(int32(player.X+22), int32(player.Y+13), 3, rl.Black)
-		rl.DrawText("A/D ou fleches : se deplacer", 24, 20, 18, rl.RayWhite)
+		rl.DrawText("A/D ou fleches : se deplacer | ESPACE : sauter", 24, 20, 18, rl.RayWhite)
 		rl.EndDrawing()
 	}
 }
