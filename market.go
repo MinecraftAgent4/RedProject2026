@@ -8,21 +8,18 @@ type Trade struct {
 	result      Object
 	price       int
 	ingredients []Resource
+	repeatable	bool
 }
 
-func (m *Market) addObject(object Object, ingredients ...Resource) {
+func (m *Market) addObject(object Object, price int, ingredients []Object) {
 	m.liste_offres = append(m.liste_offres, Trade{result: object, ingredients: ingredients})
-}
-
-func (m *Market) addGoldObject(object Object, price int) {
-	m.liste_offres = append(m.liste_offres, Trade{result: object, price: price})
 }
 
 func initMarket() Market {
 	var market Market
-	market.addGoldObject(Item{nom: "Steampack de basse qualité"}, 12)
-	market.addGoldObject(Item{nom: "Steampack"}, 28)
-	market.addGoldObject(Item{nom: "Grenade à fragmentation"}, 40)
+	market.addObject(Item{nom: "Steampack de basse qualité"}, 12, []Object{})
+	market.addObject(Item{nom: "Steampack"}, 28, []Object{})
+	market.addObject(Item{nom: "Grenade à fragmentation"}, 40, []Object{})
 	return market
 }
 

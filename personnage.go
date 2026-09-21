@@ -11,13 +11,13 @@ type Character struct {
 	inventaire  []Object
 	maxslots    int
 	money       int
-	equipe      equipement
+	equipe Equipement
 }
 
-type equipement struct {
-	helmet Armure
-	torso  Armure
-	boots  Armure
+type Equipement struct {
+	helmet Casque
+	torso Plastron
+	boots Bottes
 }
 
 func (c *Character) GiveItem(object Object) {
@@ -71,7 +71,7 @@ func (c *Character) TakePot(p Potion) {
 	for i, objet := range c.inventaire {
 		if objet.Nom() == p.nom {
 			if p.effect != nil {
-				p.effect()
+				p.effect(*c)
 			}
 
 			c.inventaire = append(c.inventaire[:i], c.inventaire[i+1:]...)

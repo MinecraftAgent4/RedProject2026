@@ -1,5 +1,7 @@
 package main
 
-func createSpellBook(spell Spell, price int) Object {
-	return SpellBook{spell: spell}
+func createSpellBook(spell Spell) SpellBook {
+	return SpellBook{
+		spell: spell,
+	}
 }
