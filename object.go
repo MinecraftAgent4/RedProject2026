@@ -66,7 +66,6 @@ type Resource struct {
 
 func (i Potion) Nom() string    { return i.nom }
 func (i Arme) Nom() string      { return i.nom }
-func (i Armure) Nom() string    { return i.nom }
 func (i Item) Nom() string      { return i.nom }
 func (i SpellBook) Nom() string { return "Livre de Sort : " + i.spell.nom }
 func (i Resource) Nom() string  { return fmt.Sprintf("%s: %d/%d", i.nom, i.quantité, i.quantité_max) }

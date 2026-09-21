@@ -11,23 +11,23 @@ type Trade struct {
 	repeatable	bool
 }
 
-func (m *Market) addObject(object Object, price int, ingredients []Object) {
-	m.liste_offres = append(m.liste_offres, Trade{result: object, ingredients: ingredients})
+func (m *Market) addObject(object Object, price int, ingredients []Resource, isRepeatable bool) {
+	m.liste_offres = append(m.liste_offres, Trade{result: object, price: price, ingredients: ingredients, repeatable: isRepeatable})
 }
 
 func initMarket() Market {
 	var market Market
-	market.addObject(Item{nom: "Steampack de basse qualité"}, 12, []Object{})
-	market.addObject(Item{nom: "Steampack"}, 28, []Object{})
-	market.addObject(Item{nom: "Grenade à fragmentation"}, 40, []Object{})
+	market.addObject(Item{nom: "Steampack de basse qualité"}, 12, []Resource{}, false)
+	market.addObject(Item{nom: "Steampack"}, 28, []Resource{}, false)
+	market.addObject(Item{nom: "Grenade à fragmentation"}, 40, []Resource{}, false)
 	return market
 }
 
 func initCharcudoc() Market {
 	var charcudoc Market
-	charcudoc.addObject(Item{nom: "Interface neurale"}, Resource{nom: "Composants", quantité: 3}, Resource{nom: "Poudre", quantité: 1})
-	charcudoc.addObject(Item{nom: "Optiques cybernétiques"}, Resource{nom: "Composants", quantité: 4}, Resource{nom: "Ferraille", quantité: 2})
-	charcudoc.addObject(Item{nom: "Réflexes augmentés"}, Resource{nom: "Composants", quantité: 5}, Resource{nom: "Poudre", quantité: 2})
+	charcudoc.addObject(Item{nom: "Interface neurale"}, 0, []Resource{Resource{nom: "Composants", quantité: 3}, Resource{nom: "Poudre", quantité: 1}}, true)
+	charcudoc.addObject(Item{nom: "Optiques cybernétiques"}, 0, []Resource{Resource{nom: "Composants", quantité: 4}, Resource{nom: "Ferraille", quantité: 2}}, true)
+	charcudoc.addObject(Item{nom: "Réflexes augmentés"}, 0, []Resource{Resource{nom: "Composants", quantité: 5}, Resource{nom: "Poudre", quantité: 2}}, true)
 	return charcudoc
 }
 

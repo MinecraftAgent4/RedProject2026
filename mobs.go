@@ -29,6 +29,6 @@ func initGoblin() Monster {
 	return initMonster(
 		"Goblin d'entraînement",
 		40,
-		Arme{"Dague", 25}
+		Arme{"Dague", 25},
 	)
 }
