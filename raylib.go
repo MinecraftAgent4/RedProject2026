@@ -182,9 +182,9 @@ func enemyRectangle(currentEnemy enemy) rl.Rectangle {
 func updateCombat(combat *combatState, currentEnemy *enemy) {
 	damage := 0
 	mouse := rl.GetMousePosition()
-	attackButton := rl.Rectangle{X: 160, Y: 275, Width: 180, Height: 48}
-	defendButton := rl.Rectangle{X: 360, Y: 275, Width: 180, Height: 48}
-	fleeButton := rl.Rectangle{X: 560, Y: 275, Width: 180, Height: 48}
+	attackButton := rl.Rectangle{X: 520, Y: 330, Width: 135, Height: 42}
+	defendButton := rl.Rectangle{X: 670, Y: 330, Width: 135, Height: 42}
+	fleeButton := rl.Rectangle{X: 670, Y: 382, Width: 135, Height: 42}
 	clicked := rl.IsMouseButtonPressed(rl.MouseButtonLeft)
 	if rl.IsKeyPressed(rl.KeyOne) || (clicked && rl.CheckCollisionPointRec(mouse, attackButton)) {
 		damage = 12
@@ -217,19 +217,65 @@ func updateCombat(combat *combatState, currentEnemy *enemy) {
 }
 
 func drawCombat(combat *combatState, currentEnemy enemy) {
-	rl.DrawRectangle(120, 105, 720, 330, rl.NewColor(12, 16, 28, 245))
-	rl.DrawRectangleLines(120, 105, 720, 330, rl.RayWhite)
-	rl.DrawText("COMBAT !", 160, 135, 30, rl.Red)
-	rl.DrawText(currentEnemy.name, 570, 145, 22, rl.RayWhite)
-	rl.DrawText("PV ennemi: "+itoa(currentEnemy.hp)+"/"+itoa(currentEnemy.maxHP), 570, 180, 18, rl.Orange)
-	rl.DrawRectangle(570, 205, 210, 16, rl.DarkGray)
-	rl.DrawRectangle(570, 205, int32(210*currentEnemy.hp/currentEnemy.maxHP), 16, rl.Red)
-	rl.DrawText("PV joueur: "+itoa(combat.playerHP)+"/"+itoa(combat.maxPlayerHP), 160, 245, 20, rl.SkyBlue)
-	drawCombatButton(rl.Rectangle{X: 160, Y: 275, Width: 180, Height: 48}, "ATTAQUER", rl.Red)
-	drawCombatButton(rl.Rectangle{X: 360, Y: 275, Width: 180, Height: 48}, "DEFENDRE", rl.Blue)
-	drawCombatButton(rl.Rectangle{X: 560, Y: 275, Width: 180, Height: 48}, "FUIR", rl.DarkGray)
-	rl.DrawText(combat.message, 160, 355, 18, rl.Gold)
-	rl.DrawText("Clique sur un bouton ou utilise 1, 2, 3.", 160, 390, 16, rl.LightGray)
+	panel := rl.Rectangle{X: 80, Y: 70, Width: 800, Height: 430}
+	rl.DrawRectangleRec(panel, rl.NewColor(238, 232, 201, 255))
+	rl.DrawRectangleLinesEx(panel, 5, rl.NewColor(51, 66, 67, 255))
+	rl.DrawRectangle(80, 300, 800, 200, rl.NewColor(67, 105, 98, 255))
+	rl.DrawLine(80, 300, 880, 300, rl.NewColor(51, 66, 67, 255))
+
+	rl.DrawText("UN ADVERSAIRE APPARAIT !", 115, 92, 22, rl.NewColor(51, 66, 67, 255))
+	rl.DrawText(currentEnemy.name, 575, 112, 20, rl.NewColor(51, 66, 67, 255))
+	drawHPBar(575, 142, currentEnemy.hp, currentEnemy.maxHP)
+	drawBattleEnemy(currentEnemy)
+	drawBattlePlayer()
+
+	rl.DrawRectangle(105, 330, 365, 135, rl.NewColor(247, 244, 222, 255))
+	rl.DrawRectangleLinesEx(rl.Rectangle{X: 105, Y: 330, Width: 365, Height: 135}, 3, rl.NewColor(51, 66, 67, 255))
+	rl.DrawText("JOUEUR", 130, 350, 18, rl.NewColor(51, 66, 67, 255))
+	rl.DrawText(combat.message, 130, 380, 16, rl.NewColor(51, 66, 67, 255))
+	rl.DrawText("PV "+itoa(combat.playerHP)+"/"+itoa(combat.maxPlayerHP), 130, 425, 18, rl.NewColor(51, 66, 67, 255))
+	drawHPBar(245, 428, combat.playerHP, combat.maxPlayerHP)
+
+	drawCombatButton(rl.Rectangle{X: 520, Y: 330, Width: 135, Height: 42}, "ATTAQUER", rl.NewColor(199, 76, 70, 255))
+	drawCombatButton(rl.Rectangle{X: 670, Y: 330, Width: 135, Height: 42}, "DEFENDRE", rl.NewColor(66, 126, 157, 255))
+	drawCombatButton(rl.Rectangle{X: 520, Y: 382, Width: 135, Height: 42}, "OBJET", rl.NewColor(193, 145, 64, 255))
+	drawCombatButton(rl.Rectangle{X: 670, Y: 382, Width: 135, Height: 42}, "FUIR", rl.NewColor(92, 95, 100, 255))
+	rl.DrawText("Clique une action", 555, 445, 16, rl.RayWhite)
+}
+
+func drawHPBar(x int32, y int32, hp int, maxHP int) {
+	rl.DrawRectangle(x, y, 210, 15, rl.NewColor(51, 66, 67, 255))
+	if hp > 0 {
+		width := int32(210 * hp / maxHP)
+		color := rl.Green
+		if hp*3 < maxHP {
+			color = rl.Red
+		} else if hp*2 < maxHP {
+			color = rl.Gold
+		}
+		rl.DrawRectangle(x, y, width, 15, color)
+	}
+}
+
+func drawBattleEnemy(currentEnemy enemy) {
+	rl.DrawEllipse(690, 230, 85, 20, rl.NewColor(51, 66, 67, 90))
+	rl.DrawCircle(690, 190, 42, rl.Maroon)
+	rl.DrawCircle(675, 180, 8, rl.RayWhite)
+	rl.DrawCircle(705, 180, 8, rl.RayWhite)
+	rl.DrawCircle(675, 180, 3, rl.Black)
+	rl.DrawCircle(705, 180, 3, rl.Black)
+	rl.DrawText("ENNEMI", 650, 245, 16, rl.NewColor(51, 66, 67, 255))
+}
+
+func drawBattlePlayer() {
+	rl.DrawEllipse(280, 245, 95, 20, rl.NewColor(51, 66, 67, 90))
+	rl.DrawCircle(280, 200, 40, rl.SkyBlue)
+	rl.DrawRectangle(252, 200, 56, 52, rl.Blue)
+	rl.DrawCircle(268, 190, 7, rl.RayWhite)
+	rl.DrawCircle(292, 190, 7, rl.RayWhite)
+	rl.DrawCircle(268, 190, 3, rl.Black)
+	rl.DrawCircle(292, 190, 3, rl.Black)
+	rl.DrawText("TOI", 268, 260, 16, rl.NewColor(51, 66, 67, 255))
 }
 
 func drawCombatButton(rect rl.Rectangle, label string, color rl.Color) {
