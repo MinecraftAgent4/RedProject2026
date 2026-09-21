@@ -97,6 +97,10 @@ func création_perso() Character {
 }
 
 func main() {
+	game()
+}
+
+func menuTextuel() {
 	statue := "menu"
 	perso := création_perso()
 	marketObjets := initMarket()
