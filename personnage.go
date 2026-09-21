@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"reflect"
 )
 
 type Character struct {
@@ -14,60 +13,48 @@ type Character struct {
 	inventaire  []Object
 	maxslots    int
 	money       int
-	equipe Equipement
+	equipe      equipement
 }
 
 type equipement struct {
 	helmet Casque
-	torso Plastron 
-	boots Bottes
+	torso  Plastron
+	boots  Bottes
 }
 
 func (c *Character) equipArmor(piece Armure) {
-	emplacement_inv := 0
-	for i, x := range c.inventaire {
-		if x == piece {
-			emplacement_inv = i
-		} else {
-			return
+	emplacement := -1
+	for index, object := range c.inventaire {
+		if object.Nom() == piece.Nom() {
+			emplacement = index
+			break
 		}
 	}
+	if emplacement == -1 {
+		return
+	}
 
-	switch reflect.TypeOf(piece) {
-		case Casque : 
-			if *equipement.Casque == nil {
-				 *equipement.Casque = piece
-				 c.inventaire[emplacement_inv] = nil
-				
-			} else {
-				c.inventaire[emplacement_inv] = nil
-				inventaire = append(inventaire, *equipement.Casque)
-				*equipement.Casque = piece
-			}
-
-	case Plastron :
-		if *equipement.Plastron == nil {
-			 *equipement.Plastron = piece
-			 c.inventaire[emplacement_inv] = nil
+	remplace := func(ancien Armure) {
+		if ancien != nil {
+			c.inventaire[emplacement] = ancien
 		} else {
-			c.inventaire[emplacement_inv] = nil
-			inventaire = append(inventaire, *equipement.Plastron)
-			*equipement.Plastron == piece
-		}
-
-	case Bottes :
-		if *equipement.Bottes == nil {
-			 *equipement.Bottes = piece
-			 c.inventaire[emplacement_inv] = nil
-		} else {
-			c.inventaire[emplacement_inv] = nil
-			inventaire = append(inventaire, *equipement.Bottes)
-			*equipement.Bottes = piece
+			c.inventaire = append(c.inventaire[:emplacement], c.inventaire[emplacement+1:]...)
 		}
 	}
-	helmet Armure
-	torso  Armure
-	boots  Armure
+	switch armor := piece.(type) {
+	case Casque:
+		ancien := c.equipe.helmet
+		remplace(ancien)
+		c.equipe.helmet = armor
+	case Plastron:
+		ancien := c.equipe.torso
+		remplace(ancien)
+		c.equipe.torso = armor
+	case Bottes:
+		ancien := c.equipe.boots
+		remplace(ancien)
+		c.equipe.boots = armor
+	}
 }
 
 func (c *Character) GiveItem(object Object) {
