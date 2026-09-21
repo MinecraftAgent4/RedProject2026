@@ -30,9 +30,18 @@ type combatState struct {
 	message     string
 }
 
+type animation struct {
+	texture   rl.Texture2D
+	frame     int
+	timer     float32
+	frameTime float32
+}
+
 func main() {
 	rl.InitWindow(960, 540, "RedProject - Platformer Prototype")
 	rl.SetTargetFPS(60)
+	playerAnimation := animation{texture: rl.LoadTexture("asset/Free 3 Cyberpunk Sprites Pixel Art(2)/3 Cyborg/Cyborg_run.png"), frameTime: 0.1}
+	enemyAnimation := animation{texture: rl.LoadTexture("asset/Free 3 Cyberpunk Sprites Pixel Art(2)/1 Biker/Biker_run.png"), frameTime: 0.14}
 
 	player := rl.Rectangle{X: 80, Y: 350, Width: 30, Height: 42}
 	velocity := rl.Vector2{}
@@ -72,6 +81,10 @@ func main() {
 		if combat == nil && (rl.IsKeyDown(rl.KeyLeft) || rl.IsKeyDown(rl.KeyA)) {
 			player.X -= 220 * delta
 		}
+		if combat == nil {
+			updateAnimation(&playerAnimation, delta)
+		}
+		updateAnimation(&enemyAnimation, delta)
 		if combat == nil && (rl.IsKeyPressed(rl.KeySpace) || rl.IsKeyPressed(rl.KeyUp) || rl.IsKeyPressed(rl.KeyW)) && onGround {
 			velocity.Y = -430
 			onGround = false
@@ -146,11 +159,11 @@ func main() {
 		}
 		for _, currentEnemy := range enemies {
 			if !currentEnemy.defeated {
-				rl.DrawRectangleRec(enemyRectangle(currentEnemy), rl.Maroon)
+				drawSprite(enemyAnimation, currentEnemy.position, 1.25)
 			}
 		}
 		rl.DrawRectangleRec(goal, rl.Red)
-		rl.DrawRectangleRec(player, rl.SkyBlue)
+		drawSprite(playerAnimation, rl.Vector2{X: player.X + player.Width/2, Y: player.Y + player.Height}, 1.35)
 		rl.EndMode2D()
 
 		collected := 0
@@ -173,6 +186,23 @@ func main() {
 	}
 
 	rl.CloseWindow()
+	rl.UnloadTexture(playerAnimation.texture)
+	rl.UnloadTexture(enemyAnimation.texture)
+}
+
+func updateAnimation(current *animation, delta float32) {
+	current.timer += delta
+	if current.timer >= current.frameTime {
+		current.timer -= current.frameTime
+		current.frame = (current.frame + 1) % 6
+	}
+}
+
+func drawSprite(current animation, position rl.Vector2, scale float32) {
+	frameWidth := float32(current.texture.Width / 6)
+	source := rl.Rectangle{X: float32(current.frame) * frameWidth, Y: 0, Width: frameWidth, Height: float32(current.texture.Height)}
+	destination := rl.Rectangle{X: position.X - frameWidth*scale/2, Y: position.Y - float32(current.texture.Height)*scale, Width: frameWidth * scale, Height: float32(current.texture.Height) * scale}
+	rl.DrawTexturePro(current.texture, source, destination, rl.Vector2{}, 0, rl.White)
 }
 
 func enemyRectangle(currentEnemy enemy) rl.Rectangle {
