@@ -1,9 +1,6 @@
 package main
 
-import (
-	"fmt"
-	"reflect"
-)
+import ("fmt")
 
 type Character struct {
 	nom         string
@@ -17,10 +14,26 @@ type Character struct {
 	equipe Equipement
 }
 
-type equipement struct {
+type Equipement struct {
 	helmet Casque
 	torso Plastron 
 	boots Bottes
+}
+
+func (c Character) armorValue() int {
+    total := 0
+
+   if c.equipe.helmet != (Casque{}) {
+        total += c.equipe.helmet.Defense()
+    }
+    if c.equipe.torso != (Plastron{}) {
+        total += c.equipe.torso.Defense()
+    }
+    if c.equipe.boots != (Bottes{}) {
+        total += c.equipe.boots.Defense()
+    }
+
+    return total
 }
 
 func (c *Character) equipArmor(piece Armure) {
@@ -32,42 +45,40 @@ func (c *Character) equipArmor(piece Armure) {
 			return
 		}
 	}
-
-	switch reflect.TypeOf(piece) {
+	c.pv_total -= c.armorValue()
+	switch piece := piece.(type) {
 		case Casque : 
-			if *equipement.Casque == nil {
-				 *equipement.Casque = piece
+			if c.equipe.helmet == (Casque{}) { 
+				 c.equipe.helmet = piece
 				 c.inventaire[emplacement_inv] = nil
 				
 			} else {
 				c.inventaire[emplacement_inv] = nil
-				inventaire = append(inventaire, *equipement.Casque)
-				*equipement.Casque = piece
+				c.inventaire = append(c.inventaire, c.equipe.helmet)
+				c.equipe.helmet = piece
 			}
 
 	case Plastron :
-		if *equipement.Plastron == nil {
-			 *equipement.Plastron = piece
+		if c.equipe.torso == (Plastron{}) {
+			 c.equipe.torso = piece
 			 c.inventaire[emplacement_inv] = nil
 		} else {
 			c.inventaire[emplacement_inv] = nil
-			inventaire = append(inventaire, *equipement.Plastron)
-			*equipement.Plastron == piece
+			c.inventaire = append(c.inventaire, c.equipe.torso)
+			c.equipe.torso = piece
 		}
 
 	case Bottes :
-		if *equipement.Bottes == nil {
-			 *equipement.Bottes = piece
+		if c.equipe.boots == (Bottes{}) {
+			 c.equipe.boots = piece
 			 c.inventaire[emplacement_inv] = nil
 		} else {
 			c.inventaire[emplacement_inv] = nil
-			inventaire = append(inventaire, *equipement.Bottes)
-			*equipement.Bottes = piece
+			c.inventaire = append(c.inventaire, c.equipe.boots)
+			c.equipe.boots = piece
 		}
 	}
-	helmet Armure
-	torso  Armure
-	boots  Armure
+	c.pv_total += c.armorValue()
 }
 
 func (c *Character) GiveItem(object Object) {
