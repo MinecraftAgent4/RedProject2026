@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"reflect"
+)
 
 type Character struct {
 	nom         string
@@ -15,6 +18,53 @@ type Character struct {
 }
 
 type equipement struct {
+	helmet Casque
+	torso Plastron 
+	boots Bottes
+}
+
+func (c *Character) equipArmor(piece Armure) {
+	emplacement_inv := 0
+	for i, x := range c.inventaire {
+		if x == piece {
+			emplacement_inv = i
+		} else {
+			return
+		}
+	}
+
+	switch reflect.TypeOf(piece) {
+		case Casque : 
+			if *equipement.Casque == nil {
+				 *equipement.Casque = piece
+				 c.inventaire[emplacement_inv] = nil
+				
+			} else {
+				inventaire = append(inventaire, *equipement.Casque)
+				*equipement.Casque = piece
+				c.inventaire[emplacement_inv] = nil
+			}
+
+	case Plastron :
+		if *equipement.Plastron == nil {
+			 *equipement.Plastron = piece
+			 c.inventaire[emplacement_inv] = nil
+		} else {
+			inventaire = append(inventaire, *equipement.Plastron)
+				*equipement.Plastron == piece
+				c.inventaire[emplacement_inv] = nil
+		}
+
+	case Bottes :
+		if *equipement.Bottes == nil {
+			 *equipement.Bottes = piece
+			 c.inventaire[emplacement_inv] = nil
+		} else {
+			inventaire = append(inventaire, *equipement.Bottes)
+				*equipement.Bottes = piece
+				c.inventaire[emplacement_inv] = nil
+		}
+	}
 	helmet Armure
 	torso  Armure
 	boots  Armure
