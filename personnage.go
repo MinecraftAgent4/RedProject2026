@@ -40,9 +40,9 @@ func (c *Character) equipArmor(piece Armure) {
 				 c.inventaire[emplacement_inv] = nil
 				
 			} else {
+				c.inventaire[emplacement_inv] = nil
 				inventaire = append(inventaire, *equipement.Casque)
 				*equipement.Casque = piece
-				c.inventaire[emplacement_inv] = nil
 			}
 
 	case Plastron :
@@ -50,9 +50,9 @@ func (c *Character) equipArmor(piece Armure) {
 			 *equipement.Plastron = piece
 			 c.inventaire[emplacement_inv] = nil
 		} else {
+			c.inventaire[emplacement_inv] = nil
 			inventaire = append(inventaire, *equipement.Plastron)
-				*equipement.Plastron == piece
-				c.inventaire[emplacement_inv] = nil
+			*equipement.Plastron == piece
 		}
 
 	case Bottes :
@@ -60,9 +60,9 @@ func (c *Character) equipArmor(piece Armure) {
 			 *equipement.Bottes = piece
 			 c.inventaire[emplacement_inv] = nil
 		} else {
+			c.inventaire[emplacement_inv] = nil
 			inventaire = append(inventaire, *equipement.Bottes)
-				*equipement.Bottes = piece
-				c.inventaire[emplacement_inv] = nil
+			*equipement.Bottes = piece
 		}
 	}
 	helmet Armure
