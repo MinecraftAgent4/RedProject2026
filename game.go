@@ -125,7 +125,7 @@ func game() {
 			continue
 		}
 
-		if rl.IsKeyPressed(rl.KeyM) {
+		if rl.IsKeyPressed(rl.KeyM) || rl.IsKeyPressed(rl.KeySemicolon) {
 			screen = "menu"
 			continue
 		}
