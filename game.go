@@ -22,7 +22,9 @@ type mapCharacter struct {
 func game() {
 	rl.InitWindow(960, 540, "RedProject")
 	rl.SetTargetFPS(60)
+	initUI()
 	defer rl.CloseWindow()
+	defer unloadUI()
 
 	marketObjets := initMarket()
 	charcudocObjets := initCharcudoc()
@@ -198,7 +200,7 @@ func game() {
 
 func handlePanelInput(screen *string, perso *Character, market *Market, charcudoc *Market, message *string) {
 	if rl.IsKeyPressed(rl.KeyEscape) {
-		
+
 		*screen = "map"
 		return
 	}

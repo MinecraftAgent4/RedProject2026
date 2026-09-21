@@ -10,49 +10,57 @@ import (
 
 func drawMap(player *rl.Rectangle, blocks []mapBlock, characters []mapCharacter, message string, perso *Character) {
 	rl.BeginDrawing()
-	rl.ClearBackground(rl.NewColor(28, 37, 61, 255))
+	rl.ClearBackground(rl.NewColor(8, 10, 20, 255))
 
 	for _, block := range blocks {
 		rl.DrawRectangleRec(block.rect, block.color)
-		rl.DrawRectangleLinesEx(block.rect, 2, rl.DarkGray)
+		rl.DrawRectangleLinesEx(block.rect, 2, rl.NewColor(80, 0, 70, 255))
 	}
 
 	for _, character := range characters {
+		// PNJ avec un petit halo et une étiquette UI.
+		rl.DrawCircle(int32(character.rect.X+character.rect.Width/2), int32(character.rect.Y+character.rect.Height/2), 27, rl.NewColor(80, 0, 70, 70))
 		rl.DrawRectangleRec(character.rect, character.color)
-		rl.DrawText(character.name, int32(character.rect.X-20), int32(character.rect.Y-22), 12, rl.RayWhite)
+		uiText(character.name, int(character.rect.X-20), int(character.rect.Y-24), 12, rl.RayWhite)
 	}
 
 	rl.DrawRectangleRec(*player, rl.SkyBlue)
 
-	rl.DrawText(message, 24, 20, 18, rl.RayWhite)
-	rl.DrawText(perso.nom+" | "+perso.classe+" | PV "+itoa(perso.pv_actuelle)+"/"+itoa(perso.pv_total),
-		24, 50, 18, rl.Gold)
-	rl.DrawText("Déplacement : A/D ou ←/→ | Saut : Espace | Menu : M",
-		24, 510, 16, rl.LightGray)
+	// HUD basé sur les assets du pack.
+	drawUIHealthBar(24, 20, 180, perso.pv_actuelle, perso.pv_total)
+	uiText(perso.nom+" | "+perso.classe, 220, 18, 18, rl.Gold)
+	uiText("PV "+itoa(perso.pv_actuelle)+"/"+itoa(perso.pv_total), 220, 43, 15, rl.RayWhite)
+
+	if message != "" {
+		drawUIPrompt(message, 24, 82)
+	}
+
+	drawUIButton("M", rl.Rectangle{X: 870, Y: 18, Width: 58, Height: 38}, false)
+	drawUIHint("A/D ou ←/→ : déplacement    Espace : saut    M : menu", 24, 510)
 
 	rl.EndDrawing()
 }
 
 func drawClassScreen(selected string) {
 	rl.BeginDrawing()
-	rl.ClearBackground(rl.NewColor(28, 37, 61, 255))
-	drawPanel("CRÉATION DU PERSONNAGE")
+	rl.ClearBackground(rl.NewColor(8, 10, 20, 255))
+	drawUIPanel("CRÉATION DU PERSONNAGE")
 
-	rl.DrawText("Choisis une classe :", 90, 130, 28, rl.RayWhite)
-	rl.DrawText("1 - netrunner       (80 PV)", 110, 200, 24, rl.RayWhite)
-	rl.DrawText("2 - merc            (100 PV)", 110, 245, 24, rl.RayWhite)
-	rl.DrawText("3 - cyberpsycho     (120 PV)", 110, 290, 24, rl.RayWhite)
+	uiText("Choisis une classe", 90, 125, 26, rl.RayWhite)
+	drawUIButton("1 - NETRUNNER     80 PV", rl.Rectangle{X: 90, Y: 180, Width: 330, Height: 42}, selected == "netrunner")
+	drawUIButton("2 - MERC         100 PV", rl.Rectangle{X: 90, Y: 235, Width: 330, Height: 42}, selected == "merc")
+	drawUIButton("3 - CYBERPSYCHO  120 PV", rl.Rectangle{X: 90, Y: 290, Width: 330, Height: 42}, selected == "cyberpsycho")
 
 	if selected != "" {
-		rl.DrawText("Classe sélectionnée : "+selected, 110, 360, 22, rl.Gold)
+		uiText("Classe sélectionnée : "+selected, 90, 370, 20, rl.Gold)
 	}
-	rl.DrawText("Appuie sur 1, 2 ou 3", 110, 420, 18, rl.LightGray)
+	drawUIHint("Appuie sur 1, 2 ou 3", 90, 425)
 	rl.EndDrawing()
 }
 
 func drawGamePanel(screen string, perso *Character, market *Market, charcudoc *Market, message string) {
 	rl.BeginDrawing()
-	rl.ClearBackground(rl.NewColor(28, 37, 61, 255))
+	rl.ClearBackground(rl.NewColor(8, 10, 20, 255))
 
 	switch screen {
 	case "menu":
@@ -69,44 +77,38 @@ func drawGamePanel(screen string, perso *Character, market *Market, charcudoc *M
 		drawGangPanel()
 	}
 
-	if screen != "menu" && screen != "gang" {
-		rl.DrawText(message, 50, 475, 18, rl.Gold)
+	if message != "" && screen != "menu" && screen != "gang" {
+		uiText(message, 70, 450, 16, rl.Gold)
 	}
-	rl.DrawText("Échap : retour", 760, 500, 16, rl.LightGray)
+	drawUIHint("Échap : retour", 760, 505)
 	rl.EndDrawing()
 }
 
 func drawMenuPanel() {
-	drawPanel("LE QUARTIER")
-	entries := []string{
-		"1. Perso",
-		"2. Inventaire",
-		"3. EXIT",
-	}
-
-	for i, entry := range entries {
-		rl.DrawText(entry, 110, int32(135+i*48), 25, rl.RayWhite)
-	}
-	rl.DrawText("Les services sont disponibles auprès des PNJ sur la carte.", 110, 330, 17, rl.LightGray)
-	rl.DrawText("Choisis un numéro pour agir", 110, 385, 18, rl.LightGray)
+	drawUIPanel("LE QUARTIER")
+	drawUIButton("1. PERSONNAGE", rl.Rectangle{X: 90, Y: 130, Width: 330, Height: 45}, false)
+	drawUIButton("2. INVENTAIRE", rl.Rectangle{X: 90, Y: 190, Width: 330, Height: 45}, false)
+	drawUIButton("3. EXIT", rl.Rectangle{X: 90, Y: 250, Width: 330, Height: 45}, false)
+	drawUIHint("Les services sont disponibles auprès des PNJ sur la carte.", 90, 340)
 }
 
 func drawCharacterPanel(perso *Character) {
-	drawPanel("PERSONNAGE")
-	rl.DrawText("Nom : "+perso.nom, 90, 130, 25, rl.RayWhite)
-	rl.DrawText("Classe : "+perso.classe, 90, 175, 25, rl.RayWhite)
-	rl.DrawText("Niveau : "+itoa(perso.niveau), 90, 220, 25, rl.RayWhite)
-	rl.DrawText("PV : "+itoa(perso.pv_actuelle)+" / "+itoa(perso.pv_total), 90, 265, 25, rl.RayWhite)
-	rl.DrawText("Argent : "+itoa(perso.money)+" po", 90, 310, 25, rl.Gold)
-	rl.DrawText("Emplacements : "+itoa(len(perso.inventaire))+" / "+itoa(perso.maxslots),
-		90, 355, 25, rl.RayWhite)
+	drawUIPanel("PERSONNAGE")
+	uiText("Nom : "+perso.nom, 90, 125, 22, rl.RayWhite)
+	uiText("Classe : "+perso.classe, 90, 165, 22, rl.RayWhite)
+	uiText("Niveau : "+itoa(perso.niveau), 90, 205, 22, rl.RayWhite)
+	uiText("Argent : "+itoa(perso.money)+" po", 90, 245, 22, rl.Gold)
+	uiText("Emplacements : "+itoa(len(perso.inventaire))+" / "+itoa(perso.maxslots), 90, 285, 22, rl.RayWhite)
+	uiText("PV", 90, 330, 18, rl.RayWhite)
+	drawUIHealthBar(130, 328, 350, perso.pv_actuelle, perso.pv_total)
+	uiText(itoa(perso.pv_actuelle)+" / "+itoa(perso.pv_total), 495, 328, 18, rl.RayWhite)
 }
 
 func drawInventoryPanel(perso *Character) {
-	drawPanel("INVENTAIRE")
+	drawUIPanel("INVENTAIRE")
 
 	if len(perso.inventaire) == 0 {
-		rl.DrawText("Inventaire vide.", 90, 145, 24, rl.RayWhite)
+		uiText("Inventaire vide.", 90, 145, 24, rl.RayWhite)
 		return
 	}
 
@@ -114,63 +116,53 @@ func drawInventoryPanel(perso *Character) {
 		if i >= 8 {
 			break
 		}
-		rl.DrawText(fmt.Sprintf("%d. %s", i+1, object.Nom()),
-			90, int32(120+i*42), 21, rl.RayWhite)
+		drawUIButton(fmt.Sprintf("%d. %s", i+1, object.Nom()), rl.Rectangle{X: 80, Y: float32(120 + i*42), Width: 520, Height: 36}, false)
 	}
 }
 
 func drawMarketPanel(title string, market *Market) {
-	drawPanel(title)
+	drawUIPanel(title)
 
 	for i, trade := range market.liste_offres {
 		line := fmt.Sprintf("%d. %s", i+1, trade.result.Nom())
-
 		if trade.price > 0 {
 			line += " - " + itoa(trade.price) + " po"
 		}
-
 		if len(trade.ingredients) > 0 {
 			ingredients := make([]string, 0, len(trade.ingredients))
 			for _, ingredient := range trade.ingredients {
-				ingredients = append(ingredients,
-					fmt.Sprintf("%d %s", ingredient.quantité, ingredient.nom))
+				ingredients = append(ingredients, fmt.Sprintf("%d %s", ingredient.quantité, ingredient.nom))
 			}
 			line += " [" + strings.Join(ingredients, ", ") + "]"
 		}
-
-		rl.DrawText(line, 70, int32(125+i*55), 20, rl.RayWhite)
+		drawUIButton(line, rl.Rectangle{X: 70, Y: float32(115 + i*52), Width: 780, Height: 40}, false)
 	}
-
-	rl.DrawText("4. Retour à la carte", 70, 355, 20, rl.RayWhite)
-	rl.DrawText("Appuie sur le numéro de l'offre pour acheter.", 70, 405, 17, rl.LightGray)
+	drawUIButton("4. RETOUR À LA CARTE", rl.Rectangle{X: 70, Y: 355, Width: 300, Height: 40}, false)
 }
 
 func drawGangPanel() {
-	drawPanel("GUERRE DE GANG")
-	rl.DrawText("Le gang est prêt à se battre.", 90, 145, 24, rl.RayWhite)
-	rl.DrawText("Cette fonctionnalité n'est pas encore disponible.", 90, 195, 20, rl.LightGray)
-	rl.DrawText("4 : retour à la carte", 90, 260, 20, rl.Gold)
+	drawUIPanel("GUERRE DE GANG")
+	uiText("Le gang est prêt à se battre.", 90, 135, 24, rl.RayWhite)
+	uiText("Cette fonctionnalité n'est pas encore disponible.", 90, 180, 19, rl.LightGray)
+	drawUIButton("4. RETOUR À LA CARTE", rl.Rectangle{X: 90, Y: 240, Width: 300, Height: 42}, false)
 }
 
 func drawPanel(title string) {
-	rl.DrawRectangle(45, 35, 870, 440, rl.NewColor(40, 48, 70, 255))
-	rl.DrawRectangleLines(45, 35, 870, 440, rl.Gold)
-	rl.DrawText(title, 70, 65, 32, rl.Gold)
+	drawUIPanel(title)
 }
 
 func readNameInput(current string) string {
 	if rl.IsKeyPressed(rl.KeyBackspace) && len(current) > 0 {
-		return current[:len(current)-1]
+		runes := []rune(current)
+		current = string(runes[:len(runes)-1])
 	}
-
 	for {
 		char := rl.GetCharPressed()
 		if char == 0 {
 			break
 		}
-
 		r := rune(char)
-		if unicode.IsLetter(r) && len(current) < 18 {
+		if unicode.IsLetter(r) && len([]rune(current)) < 18 {
 			current += string(r)
 		}
 	}
