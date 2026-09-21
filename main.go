@@ -67,6 +67,7 @@ func main() {
 	statue := "menu"
 	perso := création_perso()
 	marketObjets := initMarket()
+	charcudocObjets := initCharcudoc()
 
 	for statue != "EXIT" {
 		fmt.Println(menu)
@@ -98,7 +99,20 @@ func main() {
 			perso.accessInventory()
 		}
 		if statue == "3" {
-			fmt.Println(charcudocMenu())
+			fmt.Println(charcudocMenu(charcudocObjets, perso))
+			var choixCharcudoc int
+			fmt.Print("Choix : ")
+			if _, err := fmt.Scanln(&choixCharcudoc); err == nil {
+				if choixCharcudoc == len(charcudocObjets.liste_offres)+1 {
+					continue
+				}
+				if choixCharcudoc >= 1 && choixCharcudoc <= len(charcudocObjets.liste_offres) {
+					_, message := charcudocObjets.buy(&perso, choixCharcudoc)
+					fmt.Println(message)
+				} else {
+					fmt.Println("Choix invalide.")
+				}
+			}
 		}
 		if statue == "4" {
 			fmt.Println("Cette fonctionnalite n'est pas encore disponible.")

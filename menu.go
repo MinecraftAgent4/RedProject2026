@@ -43,27 +43,14 @@ func marketMenu(market Market, character Character) string {
 
 }
 
-func charcudocMenu() string {
+func charcudocMenu(market Market, character Character) string {
 	return gold + "╔═════════════════════════════════════════╗" + reset + "\n" +
 		gold + "║" + reset + "          " + bold + gold + "▓▓▓  CHARCUDOC  ▓▓▓" + reset + "          " + gold + "║" + reset + "\n" +
 		gold + "╠═════════════════════════════════════════╣" + reset + "\n" +
 		gold + "║" + reset + "   " + red + bold + "IMPLANTS" + reset + "                              " + gold + "║" + reset + "\n" +
-		gold + "║" + reset + "   1. Interface neurale                  " + gold + "║" + reset + "\n" +
-		gold + "║" + reset + "   2. Optiques cybernétiques              " + gold + "║" + reset + "\n" +
-		gold + "║" + reset + "   3. Réflexes augmentés                  " + gold + "║" + reset + "\n" +
-		gold + "║" + reset + "   4. Système immunitaire                 " + gold + "║" + reset + "\n" +
-		gold + "║" + reset + "   5. Module de piratage                  " + gold + "║" + reset + "\n" +
-		gold + "║" + reset + "   6. Blindage dermique                   " + gold + "║" + reset + "\n" +
-		gold + "║" + reset + "   " + red + bold + "TÊTE" + reset + "                                  " + gold + "║" + reset + "\n" +
-		gold + "║" + reset + "   7. Scanner rétinien                   " + gold + "║" + reset + "\n" +
-		gold + "║" + reset + "   8. Processeur cérébral                " + gold + "║" + reset + "\n" +
-		gold + "║" + reset + "   " + red + bold + "CORPS" + reset + "                                 " + gold + "║" + reset + "\n" +
-		gold + "║" + reset + "   9. Coeur synthétique                  " + gold + "║" + reset + "\n" +
-		gold + "║" + reset + "   10. Poumons artificiels               " + gold + "║" + reset + "\n" +
-		gold + "║" + reset + "   11. Bras mécaniques                   " + gold + "║" + reset + "\n" +
-		gold + "║" + reset + "   " + red + bold + "JAMBES" + reset + "                                " + gold + "║" + reset + "\n" +
-		gold + "║" + reset + "   12. Jambes renforcées                 " + gold + "║" + reset + "\n" +
-		gold + "║" + reset + "   13. Bottes hydrauliques               " + gold + "║" + reset + "\n" +
-		gold + "║" + reset + "   14. Retour                            " + gold + "║" + reset + "\n" +
+		gold + "║" + reset + "   1. Interface neurale       " + green + bold + "3 Comp., 1 Poudre" + reset + "       " + gold + "║" + reset + "\n" +
+		gold + "║" + reset + "   2. Optiques cybernétiques " + green + bold + "4 Comp., 2 Ferraille" + reset + "  " + gold + "║" + reset + "\n" +
+		gold + "║" + reset + "   3. Réflexes augmentés     " + green + bold + "5 Comp., 2 Poudre" + reset + "     " + gold + "║" + reset + "\n" +
+		gold + "║" + reset + "   4. Retour                 " + green + bold + fmt.Sprintf("%d Comp. disponibles", character.resourceQuantity("Composants")) + reset + " " + gold + "║" + reset + "\n" +
 		gold + "╚═════════════════════════════════════════╝" + reset + "\n"
 }

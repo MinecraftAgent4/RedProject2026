@@ -21,6 +21,14 @@ func initMarket() Market {
 	return market
 }
 
+func initCharcudoc() Market {
+	var charcudoc Market
+	charcudoc.addObject(Item{nom: "Interface neurale"}, Resource{nom: "Composants", quantité: 3}, Resource{nom: "Poudre", quantité: 1})
+	charcudoc.addObject(Item{nom: "Optiques cybernétiques"}, Resource{nom: "Composants", quantité: 4}, Resource{nom: "Ferraille", quantité: 2})
+	charcudoc.addObject(Item{nom: "Réflexes augmentés"}, Resource{nom: "Composants", quantité: 5}, Resource{nom: "Poudre", quantité: 2})
+	return charcudoc
+}
+
 func (m Market) buy(character *Character, choice int) (bool, string) {
 	if choice < 1 || choice > len(m.liste_offres) {
 		return false, "Choix invalide."
