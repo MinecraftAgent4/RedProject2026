@@ -34,7 +34,7 @@ func game() {
 			direction = -1
 		}
 		if rl.IsKeyPressed(rl.KeySpace) && onGround {
-			velocityY = -430
+			velocityY = -520
 			onGround = false
 		}
 		velocityY += 1000 * delta
@@ -42,9 +42,9 @@ func game() {
 		onGround = false
 
 		for _, block := range blocks {
-			if velocityY >= 0 && rl.CheckCollisionRecs(player, block.rect) {
+			if velocityY >= 0 && overlapsX(player, block.rect) {
 				previousBottom := player.Y - velocityY*delta + player.Height
-				if previousBottom <= block.rect.Y {
+				if previousBottom <= block.rect.Y && player.Y+player.Height >= block.rect.Y {
 					player.Y = block.rect.Y - player.Height
 					velocityY = 0
 					onGround = true
@@ -79,7 +79,7 @@ func game() {
 func moveHorizontal(player *rl.Rectangle, movement float32, blocks []mapBlock) {
 	player.X += movement
 	for _, block := range blocks {
-		if rl.CheckCollisionRecs(*player, block.rect) {
+		if overlapsX(*player, block.rect) && touchesBlockSide(*player, block.rect) {
 			if movement > 0 {
 				player.X = block.rect.X - player.Width
 			} else if movement < 0 {
@@ -87,4 +87,12 @@ func moveHorizontal(player *rl.Rectangle, movement float32, blocks []mapBlock) {
 			}
 		}
 	}
+}
+
+func touchesBlockSide(player rl.Rectangle, block rl.Rectangle) bool {
+	return player.Y < block.Y && player.Y+player.Height > block.Y+4
+}
+
+func overlapsX(first rl.Rectangle, second rl.Rectangle) bool {
+	return first.X < second.X+second.Width && first.X+first.Width > second.X
 }
