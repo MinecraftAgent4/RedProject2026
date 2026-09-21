@@ -56,7 +56,11 @@ func création_perso() Character {
 	fmt.Print("Entre ton nom : ")
 	fmt.Scanln(&nom)
 
-	return initCharacter(nom, classe_choisie, 1, pv/2, pv, []Object{}, 100)
+	return initCharacter(nom, classe_choisie, 1, pv/2, pv, []Object{
+		Resource{nom: "Ferraille", quantité: 10, quantité_max: 99},
+		Resource{nom: "Composants", quantité: 4, quantité_max: 99},
+		Resource{nom: "Poudre", quantité: 5, quantité_max: 99},
+	}, 100)
 }
 
 func main() {
@@ -75,22 +79,18 @@ func main() {
 			perso.displayInfo()
 		}
 		if statue == "2" {
-			fmt.Println(marketMenu(perso.money))
+			fmt.Println(marketMenu(marketObjets, perso))
 			var choixMarket int
 			fmt.Print("Choix : ")
 			if _, err := fmt.Scanln(&choixMarket); err == nil {
-				if choixMarket >= 1 && choixMarket <= len(marketObjets.liste_des_objet) {
-					if perso.inventoryLimit() {
-						perso.AddInventory(marketObjets.liste_des_objet[choixMarket-1])
-					} else {
-						fmt.Println("Inventaire plein.")
-					}
-				}
-				if choixMarket == 8 {
+				if choixMarket == len(marketObjets.liste_offres)+1 {
 					continue
 				}
-				if choixMarket < 1 || choixMarket > 8 {
-					fmt.Println("Choix invalide : entre un nombre entre 1 et 8.")
+				if choixMarket >= 1 && choixMarket <= len(marketObjets.liste_offres) {
+					_, message := marketObjets.buy(&perso, choixMarket)
+					fmt.Println(message)
+				} else {
+					fmt.Println("Choix invalide.")
 				}
 			}
 		}

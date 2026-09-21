@@ -11,18 +11,51 @@ type Character struct {
 	inventaire  []Object
 	maxslots    int
 	money       int
-	equipe equipement
+	equipe      equipement
 }
 
 type equipement struct {
 	helmet Armure
-	torso Armure
-	boots Armure
+	torso  Armure
+	boots  Armure
 }
 
 func (c *Character) GiveItem(object Object) {
 	if c.inventoryLimit() {
 		c.inventaire = append(c.inventaire, object)
+	}
+}
+
+func (c *Character) AddInventory(object Object) {
+	c.GiveItem(object)
+}
+
+func (c Character) resourceQuantity(name string) int {
+	quantity := 0
+	for _, object := range c.inventaire {
+		resource, ok := object.(Resource)
+		if ok && resource.nom == name {
+			quantity += resource.quantité
+		}
+	}
+	return quantity
+}
+
+func (c *Character) removeResource(name string, quantity int) {
+	for index := 0; index < len(c.inventaire) && quantity > 0; index++ {
+		resource, ok := c.inventaire[index].(Resource)
+		if !ok || resource.nom != name {
+			continue
+		}
+		if resource.quantité <= quantity {
+			quantity -= resource.quantité
+			c.inventaire = append(c.inventaire[:index], c.inventaire[index+1:]...)
+			index--
+			continue
+		}
+		resource.quantité -= quantity
+		c.inventaire[index] = resource
+		quantity = 0
 	}
 }
 

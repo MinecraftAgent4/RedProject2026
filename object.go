@@ -5,7 +5,7 @@ type Object interface {
 }
 
 type Potion struct {
-	nom string
+	nom    string
 	effect func()
 }
 
@@ -15,7 +15,7 @@ type Arme struct {
 }
 
 type Armure struct {
-	nom string
+	nom     string
 	defense int
 }
 
@@ -24,7 +24,7 @@ type Item struct {
 }
 
 type Spell struct {
-	name string
+	name   string
 	effect func()
 }
 
@@ -32,8 +32,15 @@ type SpellBook struct {
 	spell Spell
 }
 
-func (i Potion) Nom() string {return i.nom}
-func (i Arme) Nom() string {return i.nom}
-func (i Armure) Nom() string {return i.nom}
-func (i Item) Nom() string {return i.nom}
-func (i SpellBook) Nom() string {return "Livre de Sort : "+ i.spell.name}
+type Resource struct {
+	nom          string
+	quantité     int
+	quantité_max int
+}
+
+func (i Potion) Nom() string    { return i.nom }
+func (i Arme) Nom() string      { return i.nom }
+func (i Armure) Nom() string    { return i.nom }
+func (i Item) Nom() string      { return i.nom }
+func (i SpellBook) Nom() string { return "Livre de Sort : " + i.spell.name }
+func (i Resource) Nom() string  { return i.nom }
