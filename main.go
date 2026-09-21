@@ -126,6 +126,13 @@ func main() {
 				} else {
 					fmt.Println("Choix invalide.")
 				}
+				if choixMarket == "sacoche" {
+					if maxslots == 40 {
+						fmt.Println("Sacoche déjà augmentée au maximum")
+					} else {
+						upgradeInventorySlot(c *Character)
+					}
+				}
 			}
 		}
 		if statue == "5" {
@@ -158,5 +165,4 @@ func main() {
 		}
 	}
 	fmt.Println("Au revoir !")
-
 }

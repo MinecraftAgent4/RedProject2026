@@ -151,3 +151,7 @@ func (c *Character) inventoryLimit() bool {
 	}
 	return true
 }
+
+func (c *Character) upgradeInventorySlot() {
+	c.maxslots += 10
+}
