@@ -1,7 +1,5 @@
 package main
 
-import "fmt"
-
 const (
 	reset  = "\x1b[0m"
 	bold   = "\x1b[1m"
@@ -36,7 +34,7 @@ func marketMenu(market Market, character Character) string {
 		gold + "║" + reset + "   " + red + bold + "1." + reset + " " + white + "Steampack basse qualité" + reset + " - " + green + bold + "12 po" + reset + "       " + gold + "║" + reset + "\n" +
 		gold + "║" + reset + "   " + red + bold + "2." + reset + " " + white + "Steampack" + reset + " - " + green + bold + "28 po" + reset + "                    " + gold + "║" + reset + "\n" +
 		gold + "║" + reset + "   " + red + bold + "3." + reset + " " + white + "Grenade à fragmentation" + reset + " - " + green + bold + "40 po" + reset + "  " + gold + "║" + reset + "\n" +
-		gold + "║" + reset + "   " + red + bold + "4." + reset + " " + white + "EXIT" + reset + " - " + green + bold + fmt.Sprintf("%d po", character.money) + reset + "                  " + gold + "║" + reset + "\n" +
+		gold + "║" + reset + "   " + red + bold + "4." + reset + " " + white + "Retour" + reset + "                                  " + gold + "║" + reset + "\n" +
 		gold + "║" + reset + "                                         " + gold + "║" + reset + "\n" +
 		gold + "║" + reset + gray + italic + "  › choisis un numéro pour acheter" + reset + "       " + gold + "║" + reset + "\n" +
 		gold + "╚═════════════════════════════════════════╝" + reset + "\n"
@@ -51,6 +49,6 @@ func charcudocMenu(market Market, character Character) string {
 		gold + "║" + reset + "   1. Interface neurale       " + green + bold + "3 Comp., 1 Poudre" + reset + "       " + gold + "║" + reset + "\n" +
 		gold + "║" + reset + "   2. Optiques cybernétiques " + green + bold + "4 Comp., 2 Ferraille" + reset + "  " + gold + "║" + reset + "\n" +
 		gold + "║" + reset + "   3. Réflexes augmentés     " + green + bold + "5 Comp., 2 Poudre" + reset + "     " + gold + "║" + reset + "\n" +
-		gold + "║" + reset + "   4. Retour                 " + green + bold + fmt.Sprintf("%d Comp. disponibles", character.resourceQuantity("Composants")) + reset + " " + gold + "║" + reset + "\n" +
+		gold + "║" + reset + "   4. Retour                                      " + gold + "║" + reset + "\n" +
 		gold + "╚═════════════════════════════════════════╝" + reset + "\n"
 }
