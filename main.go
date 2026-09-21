@@ -15,6 +15,29 @@ func initCharacter(nom string, classe string, niveau int, pv_total int, pv_actue
 	}
 }
 
+func Isformated(s string) string {
+	if len(s) == 0 || s[0] < 'A' || s[0] > 'Z' {
+		if len(s) == 0 || s[0] < 'a' || s[0] > 'z' {
+			return ""
+		}
+	}
+	for index := 1; index < len(s); index++ {
+		if (s[index] < 'A' || s[index] > 'Z') && (s[index] < 'a' || s[index] > 'z') {
+			return ""
+		}
+	}
+	formatted := []byte(s)
+	if formatted[0] >= 'a' && formatted[0] <= 'z' {
+		formatted[0] -= 'a' - 'A'
+	}
+	for index := 1; index < len(formatted); index++ {
+		if formatted[index] >= 'A' && formatted[index] <= 'Z' {
+			formatted[index] += 'a' - 'A'
+		}
+	}
+	return string(formatted)
+}
+
 func création_perso() Character {
 	classe := []string{"netrunner", "merc", "cyberpsycho"}
 	classe_choisie := ""
@@ -53,8 +76,15 @@ func création_perso() Character {
 	}
 
 	nom := ""
-	fmt.Print("Entre ton nom : ")
-	fmt.Scanln(&nom)
+	for nom == "" {
+		fmt.Print("Entre ton prénom (lettres uniquement, première majuscule) : ")
+		var saisie string
+		fmt.Scanln(&saisie)
+		nom = Isformated(saisie)
+		if nom == "" {
+			fmt.Println("Prénom invalide.")
+		}
+	}
 
 	return initCharacter(nom, classe_choisie, 1, pv/2, pv, []Object{
 		Resource{nom: "Ferraille", quantité: 10, quantité_max: 99},
