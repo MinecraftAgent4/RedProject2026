@@ -26,11 +26,12 @@ func game() {
 
 	for !rl.WindowShouldClose() {
 		delta := rl.GetFrameTime()
+		direction := float32(0)
 		if rl.IsKeyDown(rl.KeyRight) || rl.IsKeyDown(rl.KeyD) {
-			player.X += playerSpeed * delta
+			direction = 1
 		}
 		if rl.IsKeyDown(rl.KeyLeft) || rl.IsKeyDown(rl.KeyA) {
-			player.X -= playerSpeed * delta
+			direction = -1
 		}
 		if rl.IsKeyPressed(rl.KeySpace) && onGround {
 			velocityY = -430
@@ -39,16 +40,18 @@ func game() {
 		velocityY += 1000 * delta
 		player.Y += velocityY * delta
 		onGround = false
+
 		for _, block := range blocks {
 			if velocityY >= 0 && rl.CheckCollisionRecs(player, block.rect) {
 				previousBottom := player.Y - velocityY*delta + player.Height
-				if previousBottom >= block.rect.Y {
+				if previousBottom <= block.rect.Y {
 					player.Y = block.rect.Y - player.Height
 					velocityY = 0
 					onGround = true
 				}
 			}
 		}
+		moveHorizontal(&player, direction*playerSpeed*delta, blocks)
 		if player.X < 0 {
 			player.X = 0
 		}
@@ -69,7 +72,19 @@ func game() {
 			rl.DrawRectangleLinesEx(block.rect, 2, rl.DarkGray)
 		}
 		rl.DrawRectangleRec(player, rl.SkyBlue)
-		rl.DrawText("A/D ou fleches : se deplacer | ESPACE : sauter", 24, 20, 18, rl.RayWhite)
 		rl.EndDrawing()
+	}
+}
+
+func moveHorizontal(player *rl.Rectangle, movement float32, blocks []mapBlock) {
+	player.X += movement
+	for _, block := range blocks {
+		if rl.CheckCollisionRecs(*player, block.rect) {
+			if movement > 0 {
+				player.X = block.rect.X - player.Width
+			} else if movement < 0 {
+				player.X = block.rect.X + block.rect.Width
+			}
+		}
 	}
 }
