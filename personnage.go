@@ -141,9 +141,21 @@ func (c *Character) TakePot(p Potion) {
 	}
 }
 
-func (perso Character) accessInventory() {
-	for _, i := range perso.inventaire {
-		fmt.Println("- " + i.Nom())
+func (c *Character) accessInventory() {
+	for i, objet := range c.inventaire {
+		fmt.Println(i, "- "+objet.Nom())
+	}
+	var objetChoisi int
+	fmt.Scanln(&objetChoisi)
+	if objetChoisi < 0 || objetChoisi >= len(c.inventaire) {
+		return
+	}
+	objett := c.inventaire[objetChoisi]
+	if armure, ok := objett.(Armure); ok {
+		c.equipArmor(armure)
+		return
+	} else {
+		fmt.Println("L'objet sélectionné n'est pas une armure")
 	}
 }
 
