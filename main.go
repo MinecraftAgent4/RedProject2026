@@ -127,10 +127,10 @@ func main() {
 					fmt.Println("Choix invalide.")
 				}
 				if choixMarket == "sacoche" {
-					if maxslots == 40 {
+					if perso.maxslots == 40 {
 						fmt.Println("Sacoche déjà augmentée au maximum")
 					} else {
-						upgradeInventorySlot(c *Character)
+						perso.upgradeInventorySlot()
 					}
 				}
 			}
