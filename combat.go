@@ -11,3 +11,12 @@ func (m *Monster) goblinPattern(turn int, t *Character) {
 		Attack(m,t, 1)
 	}
 }
+
+func (m *Monster) exp_reward(c *Character) {
+	if m.pv_actuelle <= 0 {
+		c.exp_joueur += (m.pv_actuelle+m.weapon.Dmg())/2
+	}
+	if c.exp_joueur >= c.exp_required {
+		c.lvlUp()
+	}
+}
