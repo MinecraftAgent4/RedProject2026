@@ -89,7 +89,7 @@ func création_perso() Character {
 
 	nom := saisiePrenom()
 
-	return initCharacter(nom, classe_choisie, 1, pv/2, pv, []Object{
+	return initCharacter(nom, classe_choisie, 1, pv, pv/2, []Object{
 		Resource{nom: "Ferraille", quantité: 10, quantité_max: 99},
 		Resource{nom: "Composants", quantité: 4, quantité_max: 99},
 		Resource{nom: "Poudre", quantité: 5, quantité_max: 99},
@@ -113,27 +113,34 @@ func main() {
 			perso.displayInfo()
 		}
 		if statue == "2" {
-			fmt.Println(marketMenu(marketObjets, perso))
-			var choixMarket int
-			fmt.Print("Choix : ")
-			if _, err := fmt.Scanln(&choixMarket); err == nil {
-				if choixMarket == len(marketObjets.liste_offres)+1 {
-					continue
-				}
-				if choixMarket >= 1 && choixMarket <= len(marketObjets.liste_offres) {
-					_, message := marketObjets.buy(&perso, choixMarket)
-					fmt.Println(message)
-				} else {
-					fmt.Println("Choix invalide.")
-				}
-				if choixMarket == 3 {
-					if perso.maxslots == 40 {
-						fmt.Println("Sacoche déjà augmentée au maximum")
+			for {
+				fmt.Println(marketMenu(marketObjets, perso))
+				var choixMarket int
+				fmt.Print("Choix : ")
+				if _, err := fmt.Scanln(&choixMarket); err == nil {
+					if choixMarket == 5 {
+						break
+					}
+					if choixMarket == len(marketObjets.liste_offres)+1 {
+						continue
+					}
+					if choixMarket >= 1 && choixMarket <= len(marketObjets.liste_offres) {
+						_, message := marketObjets.buy(&perso, choixMarket)
+						fmt.Println(message)
 					} else {
-						perso.upgradeInventorySlot()
+						fmt.Println("Choix invalide.")
+					}
+					if choixMarket == 4 {
+						if perso.maxslots == 40 {
+							fmt.Println("Sacoche déjà augmentée au maximum")
+						} else {
+							perso.upgradeInventorySlot()
+						}
 					}
 				}
 			}
+			statue = ""
+			continue
 		}
 		if statue == "5" {
 			perso.accessInventory()

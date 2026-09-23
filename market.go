@@ -17,8 +17,8 @@ func (m *Market) addObject(object Object, price int, ingredients []Resource, isR
 
 func initMarket() Market {
 	var market Market
-	market.addObject(Item{nom: "Steampack de basse qualité"}, 12, []Resource{}, false)
-	market.addObject(Item{nom: "Steampack"}, 28, []Resource{}, false)
+	market.addObject(Potion{nom: "Steampack de basse qualité", effect: func(target Entity) {target.AddPV(20)}}, 12, []Resource{}, false)
+	market.addObject(Potion{nom: "Steampack", effect: func(target Entity) {target.AddPV(40)}}, 28, []Resource{}, false)
 	market.addObject(Item{nom: "Grenade à fragmentation"}, 40, []Resource{}, false)
 	market.addObject(Item{nom: "Sacoche"}, 30, []Resource{}, true)
 	return market
@@ -53,6 +53,8 @@ func (m Market) buy(character *Character, choice int) (bool, string) {
 		character.removeResource(ingredient.nom, ingredient.quantité)
 	}
 	character.money -= trade.price
-	character.GiveItem(trade.result)
+	if trade.result.Nom() != "Sacoche" {
+		character.GiveItem(trade.result)
+	}
 	return true, trade.result.Nom() + " acheté."
 }

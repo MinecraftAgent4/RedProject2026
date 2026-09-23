@@ -150,8 +150,11 @@ func (c *Character) accessInventory() {
 	if armure, ok := objett.(Armure); ok {
 		c.equipArmor(armure)
 		return
-	} else {
-		fmt.Println("L'objet sélectionné n'est pas une armure")
+	} 
+	if potion, ok := objett.(Potion); ok {
+		c.TakePot(potion)
+	}else {
+		fmt.Println("L'objet sélectionné n'est pas utilisable")
 	}
 }
 
