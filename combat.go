@@ -1,7 +1,7 @@
 package main
 
 func Attack(a Entity, t Entity, mod int) {
-	t.Dmg(a.Atk() * mod)
+	t.Dmg((a.Atk() * mod) - t.Def())
 }
 
 func (m *Monster) goblinPattern(turn int, t *Character) {
