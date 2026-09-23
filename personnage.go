@@ -5,18 +5,20 @@ import (
 )
 
 type Character struct {
-	nom         string
-	classe      string
-	niveau      int
-	pv_total    int
-	pv_actuelle int
-	inventaire  []Object
-	maxslots    int
-	money       int
-	equipe Equipement
-	weapon Arme
+	nom          string
+	classe       string
+	niveau       int
+	pv_total     int
+	pv_actuelle  int
+	inventaire   []Object
+	maxslots     int
+	money        int
+	equipe       Equipement
+	weapon       Arme
+	weapon2      Arme
+	spellbook    SpellBook
 	exp_required int
-	exp_joueur int
+	exp_joueur   int
 }
 
 type Equipement struct {

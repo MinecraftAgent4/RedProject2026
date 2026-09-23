@@ -100,11 +100,3 @@ func initGoblin() Monster {
 		nil,
 	)
 }
-
-func (guy *Character) Atk() int {
-	if guy.weapon == nil {
-		return 1
-	}
-
-	return guy.weapon.Dmg()
-}

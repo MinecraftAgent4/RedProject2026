@@ -12,7 +12,9 @@ func initCharacter(nom string, classe string, niveau int, pv_total int, pv_actue
 		inventaire:   inventaire,
 		maxslots:     10,
 		money:        money,
-		weapon:       Ranged{nom: "Pistolet de départ", dmg: 8},
+		weapon:       nil,
+		weapon2:      nil,
+		spellbook:    SpellBook{},
 		exp_required: 100,
 		exp_joueur:   0,
 	}
@@ -92,11 +94,51 @@ func création_perso() Character {
 
 	nom := saisiePrenom()
 
-	return initCharacter(nom, classe_choisie, 1, pv/2, pv, []Object{
-		Resource{nom: "Ferraille", quantité: 10, quantité_max: 99},
-		Resource{nom: "Composants", quantité: 4, quantité_max: 99},
-		Resource{nom: "Poudre", quantité: 5, quantité_max: 99},
-	}, 100)
+	perso := initCharacter(
+		nom,
+		classe_choisie,
+		1,
+		pv/2,
+		pv,
+		[]Object{
+			Resource{nom: "Ferraille", quantité: 10, quantité_max: 99},
+			Resource{nom: "Composants", quantité: 4, quantité_max: 99},
+			Resource{nom: "Poudre", quantité: 5, quantité_max: 99},
+		},
+		100,
+	)
+
+	// Équipement de départ selon la classe
+	if classe_choisie == "merc" {
+		perso.weapon = Melee{
+			nom: "Épée de mercenaire",
+			dmg: 12,
+		}
+
+		perso.weapon2 = Ranged{
+			nom: "Pistolet",
+			dmg: 8,
+		}
+	}
+
+	if classe_choisie == "netrunner" {
+		perso.spellbook = SpellBook{
+		}
+	}
+
+	if classe_choisie == "cyberpsycho" {
+		perso.weapon = Ranged{
+			nom: "Gros calibre gauche",
+			dmg: 15,
+		}
+
+		perso.weapon2 = Ranged{
+			nom: "Gros calibre droit",
+			dmg: 15,
+		}
+	}
+
+	return perso
 }
 
 func main() {
