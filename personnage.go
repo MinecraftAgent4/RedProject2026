@@ -14,7 +14,12 @@ type Character struct {
 	maxslots    int
 	money       int
 	equipe Equipement
+<<<<<<< HEAD
 	weapon Arme
+=======
+	exp_required int
+	exp_joueur int
+>>>>>>> exp
 }
 
 type Equipement struct {
@@ -171,4 +176,14 @@ func (c *Character) inventoryLimit() bool {
 
 func (c *Character) upgradeInventorySlot() {
 	c.maxslots += 10
+}
+
+func (c *Character) lvlUp() {
+	if c.exp_joueur >= c.exp_required {
+		c.niveau += 1
+		c.exp_joueur -= c.exp_required
+		c.exp_required *= 2
+		c.pv_actuelle += 20
+		c.pv_total += 20
+	}
 }
