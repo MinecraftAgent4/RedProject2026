@@ -110,7 +110,12 @@ func main() {
 		}
 
 		if statue == "1" {
-			perso.displayInfo()
+			fmt.Print(charactinfoMenu(perso))
+			fmt.Println("\nAppuyez sur Entrée pour revenir au menu.")
+			var pause int
+			fmt.Scanln(&pause)
+			statue = ""
+			continue
 		}
 		if statue == "2" {
 			for {

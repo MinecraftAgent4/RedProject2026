@@ -134,10 +134,11 @@ func (c *Character) TakePot(p Potion) {
 
 func (c *Character) accessInventory() {
 	for i, objet := range c.inventaire {
-		fmt.Println(i, "- "+objet.Nom())
+		fmt.Println(i + 1, "- "+objet.Nom())
 	}
 	var objetChoisi int
 	fmt.Scanln(&objetChoisi)
+	objetChoisi--
 	if objetChoisi < 0 || objetChoisi >= len(c.inventaire) {
 		return
 	}
@@ -151,23 +152,6 @@ func (c *Character) accessInventory() {
 	}else {
 		fmt.Println("L'objet sélectionné n'est pas utilisable")
 	}
-}
-
-func (c *Character) displayInfo() {
-	casque := "Aucun"
-	plastron := "Aucun"
-	bottes := "Aucunes"
-	if c.equipe.helmet != nil {
-		casque = c.equipe.helmet.Nom()
-	}
-	if c.equipe.torso != nil {
-		plastron = c.equipe.torso.Nom()
-	}
-	if c.equipe.boots != nil {
-		bottes = c.equipe.boots.Nom()
-	}
-
-	fmt.Printf("nom : %s\nclasse : %s\nPV : %d / %d\nargent : %d\nCasque : %s\nPlastron : %s\nBottes : %s\n", c.nom, c.classe, c.pv_actuelle, c.pv_total, c.money, casque, plastron, bottes,)
 }
 
 func (c *Character) isDead() {
