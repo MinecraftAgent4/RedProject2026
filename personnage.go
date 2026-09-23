@@ -156,7 +156,7 @@ func (c *Character) accessInventory() {
 }
 
 func (c *Character) displayInfo() {
-	fmt.Printf("nom : %s\nclasse : %s\nPV : %d / %d\n", c.nom, c.classe, c.pv_actuelle, c.pv_total)
+	fmt.Printf("nom : %s\nclasse : %s\nPV : %d / %d\nargent : %d\n", c.nom, c.classe, c.pv_actuelle, c.pv_total, c.money)
 }
 
 func (c *Character) isDead() {

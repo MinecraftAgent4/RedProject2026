@@ -126,7 +126,7 @@ func main() {
 				} else {
 					fmt.Println("Choix invalide.")
 				}
-				if choixMarket == "sacoche" {
+				if choixMarket == 3 {
 					if perso.maxslots == 40 {
 						fmt.Println("Sacoche déjà augmentée au maximum")
 					} else {

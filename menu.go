@@ -34,7 +34,8 @@ func marketMenu(market Market, character Character) string {
 		gold + "║" + reset + "   " + red + bold + "1." + reset + " " + white + "Steampack basse qualité" + reset + " - " + green + bold + "12 po" + reset + "       " + gold + "║" + reset + "\n" +
 		gold + "║" + reset + "   " + red + bold + "2." + reset + " " + white + "Steampack" + reset + " - " + green + bold + "28 po" + reset + "                    " + gold + "║" + reset + "\n" +
 		gold + "║" + reset + "   " + red + bold + "3." + reset + " " + white + "Grenade à fragmentation" + reset + " - " + green + bold + "40 po" + reset + "  " + gold + "║" + reset + "\n" +
-		gold + "║" + reset + "   " + red + bold + "4." + reset + " " + white + "Retour" + reset + "                                  " + gold + "║" + reset + "\n" +
+		gold + "║" + reset + "   " + red + bold + "4." + reset + " " + white + "Sacoche" + reset + " - " + green + bold + "30 po" + reset + "  " + gold + "║" + reset + "\n" +
+		gold + "║" + reset + "   " + red + bold + "5." + reset + " " + white + "Retour" + reset + "                                  " + gold + "║" + reset + "\n" +
 		gold + "║" + reset + "                                         " + gold + "║" + reset + "\n" +
 		gold + "║" + reset + gray + italic + "  › choisis un numéro pour acheter" + reset + "       " + gold + "║" + reset + "\n" +
 		gold + "╚═════════════════════════════════════════╝" + reset + "\n"
