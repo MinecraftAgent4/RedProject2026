@@ -22,7 +22,13 @@ func (mob *Monster) Name() string {return mob.name}
 func (mob *Monster) MaxHp() int {return mob.pv_total}
 func (mob *Monster) Hp() int {return mob.pv_actuelle}
 func (mob *Monster) Atk() int {return mob.weapon.Dmg()}
-func (mob *Monster) Def() int {return mob.armor.Defense()}
+func (mob *Monster) Def() int {
+	if mob.armor == nil {
+		return 0
+	}
+
+	return mob.armor.Defense()
+}
 
 func (mob *Monster) Dmg(n int) {
 	mob.pv_actuelle -= n
@@ -42,10 +48,30 @@ func (mob *Monster) AddPV(n int) {
 func (guy *Character) Name() string {return guy.nom}
 func (guy *Character) MaxHp() int {return guy.pv_total}
 func (guy *Character) Hp() int {return guy.pv_actuelle}
-func (guy *Character) Atk() int {return guy.pv_actuelle}
+func (guy *Character) Atk() int {
+	if guy.weapon == nil {
+		return 1
+	}
+
+	return guy.weapon.Dmg()
+}
+
 func (guy *Character) Def() int {
-	e := guy.equipe
-	return e.helmet.Defense() + e.torso.Defense() + e.boots.Defense()
+	total := 0
+
+	if guy.equipe.helmet != nil {
+		total += guy.equipe.helmet.Defense()
+	}
+
+	if guy.equipe.torso != nil {
+		total += guy.equipe.torso.Defense()
+	}
+
+	if guy.equipe.boots != nil {
+		total += guy.equipe.boots.Defense()
+	}
+
+	return total
 }
 
 func (guy *Character) Dmg(n int) {
@@ -73,4 +99,12 @@ func initGoblin() Monster {
 		Melee{"Dague", 5},
 		nil,
 	)
+}
+
+func (guy *Character) Atk() int {
+	if guy.weapon == nil {
+		return 1
+	}
+
+	return guy.weapon.Dmg()
 }

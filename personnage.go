@@ -161,9 +161,16 @@ func (c *Character) displayInfo() {
 
 func (c *Character) isDead() {
 	if c.pv_actuelle <= 0 {
-		c.AddPV(c.pv_total / 2)
+		c.pv_actuelle = c.pv_total / 2
+
+		if c.pv_actuelle < 1 {
+			c.pv_actuelle = 1
+		}
+
+		fmt.Printf("Vous récupérez %d PV.\n", c.pv_actuelle)
 	}
 }
+
 func (c *Character) inventoryLimit() bool {
 	if len(c.inventaire) == c.maxslots {
 		return false

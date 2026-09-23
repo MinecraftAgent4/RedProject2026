@@ -20,7 +20,7 @@ func initMarket() Market {
 	market.addObject(Item{nom: "Steampack de basse qualité"}, 12, []Resource{}, false)
 	market.addObject(Item{nom: "Steampack"}, 28, []Resource{}, false)
 	market.addObject(Item{nom: "Grenade à fragmentation"}, 40, []Resource{}, false)
-	market.addObject(Item{nom: "sacoche"}, 30, []Ressource{}, true)
+	market.addObject(Item{nom: "sacoche"}, 30, []Resource{}, true)
 	return market
 }
 
