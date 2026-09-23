@@ -26,9 +26,9 @@ func initMarket() Market {
 
 func initCharcudoc() Market {
 	var charcudoc Market
-	charcudoc.addObject(Item{nom: "Interface neurale"}, 0, []Resource{Resource{nom: "Composants", quantité: 3}, Resource{nom: "Poudre", quantité: 1}}, true)
-	charcudoc.addObject(Item{nom: "Optiques cybernétiques"}, 0, []Resource{Resource{nom: "Composants", quantité: 4}, Resource{nom: "Ferraille", quantité: 2}}, true)
-	charcudoc.addObject(Item{nom: "Réflexes augmentés"}, 0, []Resource{Resource{nom: "Composants", quantité: 5}, Resource{nom: "Poudre", quantité: 2}}, true)
+	charcudoc.addObject(Casque{nom: "Interface neurale", defense: 5}, 0, []Resource{Resource{nom: "Composants", quantité: 3}, Resource{nom: "Poudre", quantité: 1}}, true)
+	charcudoc.addObject(Plastron{nom: "Optiques cybernétiques", defense: 10}, 0, []Resource{Resource{nom: "Composants", quantité: 4}, Resource{nom: "Ferraille", quantité: 2}}, true)
+	charcudoc.addObject(Bottes{nom: "Réflexes augmentés", defense: 15}, 0, []Resource{Resource{nom: "Composants", quantité: 5}, Resource{nom: "Poudre", quantité: 2}}, true)
 	return charcudoc
 }
 

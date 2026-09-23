@@ -44,8 +44,7 @@ func (guy *Character) MaxHp() int {return guy.pv_total}
 func (guy *Character) Hp() int {return guy.pv_actuelle}
 func (guy *Character) Atk() int {return guy.pv_actuelle}
 func (guy *Character) Def() int {
-	e := guy.equipe
-	return e.helmet.Defense() + e.torso.Defense() + e.boots.Defense()
+	return guy.armorValue()
 }
 
 func (guy *Character) Dmg(n int) {

@@ -28,13 +28,13 @@ type Equipement struct {
 func (c Character) armorValue() int {
     total := 0
 
-   if c.equipe.helmet != (Casque{}) {
+   if c.equipe.helmet != nil {
         total += c.equipe.helmet.Defense()
     }
-    if c.equipe.torso != (Plastron{}) {
+    if c.equipe.torso != nil {
         total += c.equipe.torso.Defense()
     }
-    if c.equipe.boots != (Bottes{}) {
+    if c.equipe.boots != nil {
         total += c.equipe.boots.Defense()
     }
 
@@ -42,46 +42,41 @@ func (c Character) armorValue() int {
 }
 
 func (c *Character) equipArmor(piece Armure) {
-	emplacement_inv := 0
+	emplacement_inv := -1
 	for i, x := range c.inventaire {
 		if x == piece {
 			emplacement_inv = i
-		} else {
-			return
+			break
 		}
 	}
 
-	switch piece.(type) {
-		case Casque : 
-			if c.equipe.helmet == nil {
-				 c.equipe.helmet = piece
-				 c.inventaire[emplacement_inv] = nil
-				
-			} else {
-				c.inventaire[emplacement_inv] = nil
+	if emplacement_inv == -1 {
+		return
+	}
+
+	 c.inventaire = append(
+        c.inventaire[:emplacement_inv],
+        c.inventaire[emplacement_inv+1:]..., 
+	 )
+
+	switch armure := piece.(type) {
+	case Casque : 
+			if c.equipe.helmet != nil {
 				c.inventaire = append(c.inventaire, c.equipe.helmet)
-				c.equipe.helmet = piece
-			}
+     	    }
+       		 c.equipe.helmet = armure
 
 	case Plastron :
-		if c.equipe.torso == nil {
-			 c.equipe.torso = piece
-			 c.inventaire[emplacement_inv] = nil
-		} else {
-			c.inventaire[emplacement_inv] = nil
+		if c.equipe.torso != nil {
 			c.inventaire = append(c.inventaire, c.equipe.torso)
-			c.equipe.torso = piece
 		}
+		c.equipe.torso = armure
 
 	case Bottes :
-		if c.equipe.boots == nil {
-			 c.equipe.boots = piece
-			 c.inventaire[emplacement_inv] = nil
-		} else {
-			c.inventaire[emplacement_inv] = nil
+		if c.equipe.boots != nil {
 			c.inventaire = append(c.inventaire, c.equipe.boots)
-			c.equipe.boots = piece
 		}
+		c.equipe.boots = armure
 	}
 }
 
@@ -159,7 +154,20 @@ func (c *Character) accessInventory() {
 }
 
 func (c *Character) displayInfo() {
-	fmt.Printf("nom : %s\nclasse : %s\nPV : %d / %d\nargent : %d\n", c.nom, c.classe, c.pv_actuelle, c.pv_total, c.money)
+	casque := "Aucun"
+	plastron := "Aucun"
+	bottes := "Aucunes"
+	if c.equipe.helmet != nil {
+		casque = c.equipe.helmet.Nom()
+	}
+	if c.equipe.torso != nil {
+		plastron = c.equipe.torso.Nom()
+	}
+	if c.equipe.boots != nil {
+		bottes = c.equipe.boots.Nom()
+	}
+
+	fmt.Printf("nom : %s\nclasse : %s\nPV : %d / %d\nargent : %d\nCasque : %s\nPlastron : %s\nBottes : %s\n", c.nom, c.classe, c.pv_actuelle, c.pv_total, c.money, casque, plastron, bottes,)
 }
 
 func (c *Character) isDead() {
