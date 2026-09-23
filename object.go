@@ -6,15 +6,29 @@ type Object interface {
 	Nom() string
 }
 
-type Potion struct {
-	nom    string
-	effect func(target Entity)
+
+type Arme interface {
+	Nom() string
+	Dmg() int
+	DmgType() string
 }
 
-type Arme struct {
+type Melee struct {
 	nom string
 	dmg int
 }
+
+type Ranged struct {
+	nom string
+	dmg int
+}
+
+func (i Melee) Dmg() int			{return i.dmg}
+func (i Ranged) Dmg() int			{return i.dmg}
+func (i Melee) DmgType() string		{return "melee"}
+func (i Ranged) DmgType() string	{return "ranged"}
+func (i Melee) Nom() string			{ return i.nom }
+func (i Ranged) Nom() string		{ return i.nom }
 
 type Armure interface {
 	Nom() string
@@ -36,12 +50,12 @@ type Bottes struct {
 	defense int
 }
 
-func (a Casque) Nom() string {return a.nom}
-func (a Plastron) Nom() string {return a.nom}
-func (a Bottes) Nom() string {return a.nom}
-func (a Casque) Defense() int {return a.defense}
+func (a Casque) Nom() string	{return a.nom}
+func (a Plastron) Nom() string 	{return a.nom}
+func (a Bottes) Nom() string 	{return a.nom}
+func (a Casque) Defense() int 	{return a.defense}
 func (a Plastron) Defense() int {return a.defense}
-func (a Bottes) Defense() int {return a.defense}
+func (a Bottes) Defense() int 	{return a.defense}
 
 
 
@@ -52,6 +66,11 @@ type Item struct {
 type Spell struct {
 	nom string
 	effect func()
+}
+
+type Potion struct {
+	nom    string
+	effect func(target Entity)
 }
 
 type SpellBook struct {
@@ -65,7 +84,6 @@ type Resource struct {
 }
 
 func (i Potion) Nom() string    { return i.nom }
-func (i Arme) Nom() string      { return i.nom }
 func (i Item) Nom() string      { return i.nom }
 func (i SpellBook) Nom() string { return "Livre de Sort : " + i.spell.nom }
 func (i Resource) Nom() string  { return fmt.Sprintf("%s: %d/%d", i.nom, i.quantité, i.quantité_max) }

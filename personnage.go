@@ -1,6 +1,8 @@
 package main
 
-import ("fmt")
+import (
+	"fmt"
+)
 
 type Character struct {
 	nom         string
@@ -12,12 +14,13 @@ type Character struct {
 	maxslots    int
 	money       int
 	equipe Equipement
+	weapon Arme
 }
 
 type Equipement struct {
-	helmet Casque
-	torso Plastron 
-	boots Bottes
+	helmet Armure
+	torso Armure 
+	boots Armure
 }
 
 func (c Character) armorValue() int {
@@ -45,10 +48,10 @@ func (c *Character) equipArmor(piece Armure) {
 			return
 		}
 	}
-	c.pv_total -= c.armorValue()
-	switch piece := piece.(type) {
+
+	switch piece.(type) {
 		case Casque : 
-			if c.equipe.helmet == (Casque{}) { 
+			if c.equipe.helmet == nil {
 				 c.equipe.helmet = piece
 				 c.inventaire[emplacement_inv] = nil
 				
@@ -59,7 +62,7 @@ func (c *Character) equipArmor(piece Armure) {
 			}
 
 	case Plastron :
-		if c.equipe.torso == (Plastron{}) {
+		if c.equipe.torso == nil {
 			 c.equipe.torso = piece
 			 c.inventaire[emplacement_inv] = nil
 		} else {
@@ -69,7 +72,7 @@ func (c *Character) equipArmor(piece Armure) {
 		}
 
 	case Bottes :
-		if c.equipe.boots == (Bottes{}) {
+		if c.equipe.boots == nil {
 			 c.equipe.boots = piece
 			 c.inventaire[emplacement_inv] = nil
 		} else {
@@ -78,7 +81,6 @@ func (c *Character) equipArmor(piece Armure) {
 			c.equipe.boots = piece
 		}
 	}
-	c.pv_total += c.armorValue()
 }
 
 func (c *Character) GiveItem(object Object) {
@@ -120,19 +122,11 @@ func (c *Character) removeResource(name string, quantity int) {
 	}
 }
 
-func (c *Character) AddPV(x int) {
-	c.pv_actuelle += x
-
-	if c.pv_actuelle > c.pv_total {
-		c.pv_actuelle = c.pv_total
-	}
-}
-
 func (c *Character) TakePot(p Potion) {
 	for i, objet := range c.inventaire {
 		if objet.Nom() == p.nom {
 			if p.effect != nil {
-				p.effect(*c)
+				p.effect(c)
 			}
 
 			c.inventaire = append(c.inventaire[:i], c.inventaire[i+1:]...)
