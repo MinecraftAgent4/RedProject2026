@@ -359,7 +359,7 @@ func cyberpsychoAttack(perso *Character, monstre *Monster, choix int) {
 	}
 }
 
-func netrunnerAttack(perso *Character, monstre *Monster) {
+func netrunnerAttack(perso *Character, monstre *Monster) bool {
 	fmt.Println("\n===== HACKS =====")
 	fmt.Println("1 - Surcharge")
 	fmt.Println("2 - Virus")
@@ -373,7 +373,6 @@ func netrunnerAttack(perso *Character, monstre *Monster) {
 	switch choix {
 
 	case 1:
-		// Surcharge : gros dégâts directs
 		fmt.Println("\n💻 Surcharge du système !")
 
 		damage := 20 - monstre.Def()
@@ -385,9 +384,10 @@ func netrunnerAttack(perso *Character, monstre *Monster) {
 
 		fmt.Printf("Le hack inflige %d dégâts !\n", damage)
 
+		return true
+
 	case 2:
-		// Virus : dégâts plus faibles mais poison
-		fmt.Println("\n Injection d'un virus !")
+		fmt.Println("\n🦠 Injection d'un virus !")
 
 		damage := 10 - monstre.Def()
 		if damage < 1 {
@@ -397,12 +397,12 @@ func netrunnerAttack(perso *Character, monstre *Monster) {
 		monstre.Dmg(damage)
 
 		fmt.Printf("Le virus inflige %d dégâts !\n", damage)
+
 		monstre.poison()
 
-		
+		return true
 
 	case 3:
-		// Court-circuit : dégâts + deuxième petit dégât
 		fmt.Println("\n⚡ Court-circuit !")
 
 		damage := 12 - monstre.Def()
@@ -414,12 +414,15 @@ func netrunnerAttack(perso *Character, monstre *Monster) {
 
 		fmt.Printf("Le court-circuit inflige %d dégâts !\n", damage)
 
+		return true
+
 	case 4:
 		fmt.Println("Retour.")
-		return
+		return false
 
 	default:
 		fmt.Println("Choix invalide.")
+		return false
 	}
 }
 

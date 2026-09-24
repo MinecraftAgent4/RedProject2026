@@ -141,7 +141,7 @@ func création_perso() Character {
 	return perso
 }
 
-func main() {
+func command() {
 	statue := "menu"
 	perso := création_perso()
 	marketObjets := initMarket()
@@ -240,4 +240,8 @@ func main() {
 	}
 
 	fmt.Println("Au revoir !")
+}
+
+func main(){
+	game()
 }

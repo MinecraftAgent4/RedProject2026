@@ -106,6 +106,6 @@ func initBoss1() Monster {
 		"Boss 1",
 		200,
 		Melee{"Boss Sword", 20},
-		Casque{"Boss Helmet", 10}
+		Casque{"Boss Helmet", 10},
 	)
 }
