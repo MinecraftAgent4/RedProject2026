@@ -100,3 +100,12 @@ func initGoblin() Monster {
 		nil,
 	)
 }
+
+func initBoss1() Monster {
+	return initMonster(
+		"Boss 1",
+		200,
+		Melee{"Boss Sword", 20},
+		Casque{"Boss Helmet", 10}
+	)
+}

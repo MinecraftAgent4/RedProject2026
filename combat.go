@@ -422,3 +422,11 @@ func netrunnerAttack(perso *Character, monstre *Monster) {
 		fmt.Println("Choix invalide.")
 	}
 }
+
+func (m *Monster) boss1Pattern(turn int, t *Character) {
+	if turn%4 == 3 {
+		m.AddPV(5)
+	} else {
+		Attack(m, t, turn%4 +1)
+	}
+}
