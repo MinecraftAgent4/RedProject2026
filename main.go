@@ -4,14 +4,19 @@ import "fmt"
 
 func initCharacter(nom string, classe string, niveau int, pv_total int, pv_actuelle int, inventaire []Object, money int) Character {
 	return Character{
-		nom:         nom,
-		classe:      classe,
-		niveau:      niveau,
-		pv_total:    pv_total,
-		pv_actuelle: pv_actuelle,
-		inventaire:  inventaire,
-		maxslots:    10,
-		money:       money,
+		nom:          nom,
+		classe:       classe,
+		niveau:       niveau,
+		pv_total:     pv_total,
+		pv_actuelle:  pv_actuelle,
+		inventaire:   inventaire,
+		maxslots:     10,
+		money:        money,
+		weapon:       nil,
+		weapon2:      nil,
+		spellbook:    SpellBook{},
+		exp_required: 100,
+		exp_joueur:   0,
 	}
 }
 
@@ -89,11 +94,51 @@ func création_perso() Character {
 
 	nom := saisiePrenom()
 
-	return initCharacter(nom, classe_choisie, 1, pv, pv/2, []Object{
-		Resource{nom: "Ferraille", quantité: 10, quantité_max: 99},
-		Resource{nom: "Composants", quantité: 4, quantité_max: 99},
-		Resource{nom: "Poudre", quantité: 5, quantité_max: 99},
-	}, 100)
+	perso := initCharacter(
+		nom,
+		classe_choisie,
+		1,
+		pv/2,
+		pv,
+		[]Object{
+			Resource{nom: "Ferraille", quantité: 10, quantité_max: 99},
+			Resource{nom: "Composants", quantité: 4, quantité_max: 99},
+			Resource{nom: "Poudre", quantité: 5, quantité_max: 99},
+		},
+		100,
+	)
+
+	// Équipement de départ selon la classe
+	if classe_choisie == "merc" {
+		perso.weapon = Melee{
+			nom: "Épée de mercenaire",
+			dmg: 12,
+		}
+
+		perso.weapon2 = Ranged{
+			nom: "Pistolet",
+			dmg: 8,
+		}
+	}
+
+	if classe_choisie == "netrunner" {
+		perso.spellbook = SpellBook{
+		}
+	}
+
+	if classe_choisie == "cyberpsycho" {
+		perso.weapon = Ranged{
+			nom: "Gros calibre gauche",
+			dmg: 15,
+		}
+
+		perso.weapon2 = Ranged{
+			nom: "Gros calibre droit",
+			dmg: 15,
+		}
+	}
+
+	return perso
 }
 
 func main() {
@@ -105,6 +150,7 @@ func main() {
 	for statue != "EXIT" {
 		fmt.Println(menu)
 		fmt.Print("Choix : ")
+
 		if _, err := fmt.Scanln(&statue); err != nil {
 			break
 		}
@@ -147,9 +193,7 @@ func main() {
 			statue = ""
 			continue
 		}
-		if statue == "5" {
-			perso.accessInventory()
-		}
+
 		if statue == "3" {
 			for {
 				fmt.Println(charcudocMenu(charcudocObjets, perso))
@@ -173,15 +217,48 @@ func main() {
 			statue = ""
 			continue
 		}
+
 		if statue == "4" {
-			fmt.Println("Cette fonctionnalite n'est pas encore disponible.")
+			for perso.Hp() > 0 {
+				monstre := initGoblin()
+
+				victoire := combat(&perso, monstre)
+
+				if !victoire {
+					break
+				}
+
+				fmt.Println("\nVoulez-vous continuer le combat ?")
+				fmt.Println("1 - Continuer")
+				fmt.Println("2 - Retour au quartier")
+				fmt.Print("Choix : ")
+
+				var choixCombat string
+				fmt.Scanln(&choixCombat)
+
+				if choixCombat != "1" {
+					break
+				}
+			}
 		}
-		if statue != "1" && statue != "2" && statue != "3" && statue != "4" && statue != "5" && statue != "6" {
-			fmt.Println("Choix invalide : entre un nombre entre 1 et 6.")
+
+		if statue == "5" {
+			perso.accessInventory()
 		}
+
 		if statue == "6" {
 			statue = "EXIT"
 		}
+
+		if statue != "1" &&
+			statue != "2" &&
+			statue != "3" &&
+			statue != "4" &&
+			statue != "5" &&
+			statue != "6" {
+			fmt.Println("Choix invalide : entre un nombre entre 1 et 6.")
+		}
 	}
+
 	fmt.Println("Au revoir !")
 }

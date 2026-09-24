@@ -2,9 +2,9 @@ package main
 
 import "time"
 
-func (c *Character) poison() {
+func (m *Monster) poison() {
 	for i := 0; i <= 2; i++ {
-		c.AddPV(-10)
+		m.AddPV(-10)
 		time.Sleep(1 * time.Second)
 	}
 }

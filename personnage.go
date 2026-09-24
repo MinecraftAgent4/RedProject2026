@@ -5,18 +5,20 @@ import (
 )
 
 type Character struct {
-	nom         string
-	classe      string
-	niveau      int
-	pv_total    int
-	pv_actuelle int
-	inventaire  []Object
-	maxslots    int
-	money       int
-	equipe Equipement
-	weapon Arme
+	nom          string
+	classe       string
+	niveau       int
+	pv_total     int
+	pv_actuelle  int
+	inventaire   []Object
+	maxslots     int
+	money        int
+	equipe       Equipement
+	weapon       Arme
+	weapon2      Arme
+	spellbook    SpellBook
 	exp_required int
-	exp_joueur int
+	exp_joueur   int
 }
 
 type Equipement struct {
@@ -156,9 +158,16 @@ func (c *Character) accessInventory() {
 
 func (c *Character) isDead() {
 	if c.pv_actuelle <= 0 {
-		c.AddPV(c.pv_total / 2)
+		c.pv_actuelle = c.pv_total / 2
+
+		if c.pv_actuelle < 1 {
+			c.pv_actuelle = 1
+		}
+
+		fmt.Printf("Vous récupérez %d PV.\n", c.pv_actuelle)
 	}
 }
+
 func (c *Character) inventoryLimit() bool {
 	if len(c.inventaire) == c.maxslots {
 		return false
