@@ -186,3 +186,18 @@ func (c *Character) lvlUp() {
 	c.pv_actuelle += 20
 	c.pv_total += 20
 }
+
+func removeInventoryIndex(perso *Character, index int) {
+	if perso == nil {
+		return
+	}
+
+	if index < 0 || index >= len(perso.inventaire) {
+		return
+	}
+
+	perso.inventaire = append(
+		perso.inventaire[:index],
+		perso.inventaire[index+1:]...,
+	)
+}
