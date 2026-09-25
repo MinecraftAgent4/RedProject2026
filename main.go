@@ -135,7 +135,7 @@ func pause() {
 	readLine()
 }
 
-func main() {
+func cli() {
 	perso := création_perso()
 	marketObjets := initMarket()
 	charcudocObjets := initCharcudoc()
@@ -304,4 +304,8 @@ func openGang(perso *Character) {
 			fmt.Println("Choix invalide.")
 		}
 	}
+}
+
+func main() {
+	cli()
 }
