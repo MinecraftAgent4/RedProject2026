@@ -11,5 +11,7 @@ select : 1,2,3,4,5,6
 ### CLI :
 selecte : 1,2,3,4,5,6
 
+## le fichier .zip 
+il y a un fichier appeler "asset valide" il faut le unzip
 
 
