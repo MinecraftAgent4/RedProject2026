@@ -135,7 +135,7 @@ func pause() {
 	readLine()
 }
 
-func cli() {
+func Cli() {
 	perso := création_perso()
 	marketObjets := initMarket()
 	charcudocObjets := initCharcudoc()
@@ -307,5 +307,5 @@ func openGang(perso *Character) {
 }
 
 func main() {
-	cli()
+	game()
 }
