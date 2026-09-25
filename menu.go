@@ -1,4 +1,5 @@
 package main
+
 import "fmt"
 
 const (
@@ -73,16 +74,16 @@ func charactinfoMenu(character Character) string {
 		gold + "║" + reset + "         " + bold + gold + "▓▓▓  INFOS JOUEUR  ▓▓▓" + reset + "          " + gold + "║" + reset + "\n" +
 		gold + "╠═════════════════════════════════════════╣" + reset + "\n" +
 		gold + "║" + reset + "                                         " + gold + "║" + reset + "\n" +
-		gold + "║" + reset + "   " + white + bold +  "Nom :" + reset + " " + white + fmt.Sprintf("%s", character.nom) + reset + "                              " + gold + "║" + reset + "\n" +
-		gold + "║" + reset + "   " + white + bold +  "Classe :" + reset + " " + white + fmt.Sprintf("%s", character.classe) + reset + "                    " + gold + "║" + reset + "\n" +
-		gold + "║" + reset + "   " + white + bold +  "Niveau :" + reset + " " + white + fmt.Sprintf("%d", character.niveau) + reset + "                            " + gold + "║" + reset + "\n" +
-		gold + "║" + reset + "   " + white + bold +  "PV :" + reset + " " + white + fmt.Sprintf("%d / %d", character.pv_actuelle, character.pv_total) + reset + "                          " + gold + "║" + reset + "\n" +
-		gold + "║" + reset + "   " + white + bold +  "Experience :" + reset + " " + white + fmt.Sprintf("%d / %d", character.exp_joueur, character.exp_required) + reset + "                    " + gold + "║" + reset + "\n" +
-		gold + "║" + reset + "   " + white + bold +  "Argent :" + reset + " " + white + fmt.Sprintf("%d", character.money) + reset + "                          " + gold + "║" + reset + "\n" +
-		gold + "║" + reset + "   " + white + bold +  "Armure :" + reset + " " + white + fmt.Sprintf("%d", character.armorValue()) + reset + "                            " + gold + "║" + reset + "\n" +
+		gold + "║" + reset + "   " + white + bold + "Nom :" + reset + " " + white + fmt.Sprintf("%s", character.nom) + reset + "                              " + gold + "║" + reset + "\n" +
+		gold + "║" + reset + "   " + white + bold + "Classe :" + reset + " " + white + fmt.Sprintf("%s", character.classe) + reset + "                    " + gold + "║" + reset + "\n" +
+		gold + "║" + reset + "   " + white + bold + "Niveau :" + reset + " " + white + fmt.Sprintf("%d", character.niveau) + reset + "                            " + gold + "║" + reset + "\n" +
+		gold + "║" + reset + "   " + white + bold + "PV :" + reset + " " + white + fmt.Sprintf("%d / %d", character.pv_actuelle, character.pv_total) + reset + "                          " + gold + "║" + reset + "\n" +
+		gold + "║" + reset + "   " + white + bold + "Experience :" + reset + " " + white + fmt.Sprintf("%d / %d", character.exp_joueur, character.exp_required) + reset + "                    " + gold + "║" + reset + "\n" +
+		gold + "║" + reset + "   " + white + bold + "Argent :" + reset + " " + white + fmt.Sprintf("%d", character.money) + reset + "                          " + gold + "║" + reset + "\n" +
+		gold + "║" + reset + "   " + white + bold + "Armure :" + reset + " " + white + fmt.Sprintf("%d", character.armorValue()) + reset + "                            " + gold + "║" + reset + "\n" +
 		gold + "║" + reset + "   " + white + bold + "Casque :" + reset + " " + white + fmt.Sprintf(casque) + "                        " + gold + "║" + reset + "\n" +
 		gold + "║" + reset + "   " + white + bold + "Plastron :" + reset + " " + white + fmt.Sprintf(plastron) + reset + "                      " + gold + "║" + reset + "\n" +
-		gold + "║" + reset + "   " + white + bold + "Bottes :" + reset + " " + white +fmt.Sprintf(bottes) + "                      " + gold + "║" + reset + "\n" +
+		gold + "║" + reset + "   " + white + bold + "Bottes :" + reset + " " + white + fmt.Sprintf(bottes) + "                      " + gold + "║" + reset + "\n" +
 		gold + "║" + reset + "                                         " + gold + "║" + reset + "\n" +
 		gold + "╚═════════════════════════════════════════╝" + reset + "\n"
 

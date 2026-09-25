@@ -8,7 +8,7 @@ type Trade struct {
 	result      Object
 	price       int
 	ingredients []Resource
-	repeatable	bool
+	repeatable  bool
 }
 
 func (m *Market) addObject(object Object, price int, ingredients []Resource, isRepeatable bool) {
@@ -17,8 +17,8 @@ func (m *Market) addObject(object Object, price int, ingredients []Resource, isR
 
 func initMarket() Market {
 	var market Market
-	market.addObject(Potion{nom: "Steampack de basse qualité", effect: func(target Entity) {target.AddPV(20)}}, 12, []Resource{}, false)
-	market.addObject(Potion{nom: "Steampack", effect: func(target Entity) {target.AddPV(40)}}, 28, []Resource{}, false)
+	market.addObject(Potion{nom: "Steampack de basse qualité", effect: func(target Entity) { target.AddPV(20) }}, 12, []Resource{}, false)
+	market.addObject(Potion{nom: "Steampack", effect: func(target Entity) { target.AddPV(40) }}, 28, []Resource{}, false)
 	market.addObject(Item{nom: "Grenade à fragmentation"}, 40, []Resource{}, false)
 	market.addObject(Item{nom: "Sacoche"}, 30, []Resource{}, true)
 	return market

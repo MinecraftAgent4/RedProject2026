@@ -6,7 +6,6 @@ type Object interface {
 	Nom() string
 }
 
-
 type Arme interface {
 	Nom() string
 	Dmg() int
@@ -23,12 +22,12 @@ type Ranged struct {
 	dmg int
 }
 
-func (i Melee) Dmg() int			{return i.dmg}
-func (i Ranged) Dmg() int			{return i.dmg}
-func (i Melee) DmgType() string		{return "melee"}
-func (i Ranged) DmgType() string	{return "ranged"}
-func (i Melee) Nom() string			{ return i.nom }
-func (i Ranged) Nom() string		{ return i.nom }
+func (i Melee) Dmg() int         { return i.dmg }
+func (i Ranged) Dmg() int        { return i.dmg }
+func (i Melee) DmgType() string  { return "melee" }
+func (i Ranged) DmgType() string { return "ranged" }
+func (i Melee) Nom() string      { return i.nom }
+func (i Ranged) Nom() string     { return i.nom }
 
 type Armure interface {
 	Nom() string
@@ -36,35 +35,33 @@ type Armure interface {
 }
 
 type Casque struct {
-	nom string
+	nom     string
 	defense int
 }
 
 type Plastron struct {
-	nom string
+	nom     string
 	defense int
 }
 
 type Bottes struct {
-	nom string
+	nom     string
 	defense int
 }
 
-func (a Casque) Nom() string	{return a.nom}
-func (a Plastron) Nom() string 	{return a.nom}
-func (a Bottes) Nom() string 	{return a.nom}
-func (a Casque) Defense() int 	{return a.defense}
-func (a Plastron) Defense() int {return a.defense}
-func (a Bottes) Defense() int 	{return a.defense}
-
-
+func (a Casque) Nom() string    { return a.nom }
+func (a Plastron) Nom() string  { return a.nom }
+func (a Bottes) Nom() string    { return a.nom }
+func (a Casque) Defense() int   { return a.defense }
+func (a Plastron) Defense() int { return a.defense }
+func (a Bottes) Defense() int   { return a.defense }
 
 type Item struct {
 	nom string
 }
 
 type Spell struct {
-	nom string
+	nom    string
 	effect func()
 }
 

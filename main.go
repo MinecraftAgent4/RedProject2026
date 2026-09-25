@@ -1,14 +1,22 @@
 package main
 
-import "fmt"
+import (
+	"bufio"
+	"fmt"
+	"os"
+	"strconv"
+	"strings"
+)
 
-func initCharacter(nom string, classe string, niveau int, pv_total int, pv_actuelle int, inventaire []Object, money int) Character {
+var inputReader = bufio.NewReader(os.Stdin)
+
+func initCharacter(nom string, classe string, niveau int, pvTotal int, pvActuelle int, inventaire []Object, money int) Character {
 	return Character{
 		nom:          nom,
 		classe:       classe,
 		niveau:       niveau,
-		pv_total:     pv_total,
-		pv_actuelle:  pv_actuelle,
+		pv_total:     pvTotal,
+		pv_actuelle:  pvActuelle,
 		inventaire:   inventaire,
 		maxslots:     10,
 		money:        money,
@@ -21,85 +29,69 @@ func initCharacter(nom string, classe string, niveau int, pv_total int, pv_actue
 }
 
 func Isformated(s string) string {
-	if len(s) == 0 {
+	s = strings.TrimSpace(s)
+	if s == "" {
 		return ""
 	}
-
-	formatted := []byte(s)
-	for index := 0; index < len(formatted); index++ {
-		if index == 0 {
-			if formatted[index] >= 'a' && formatted[index] <= 'z' {
-				formatted[index] -= 'a' - 'A'
-			} else if formatted[index] < 'A' || formatted[index] > 'Z' {
-				return ""
-			}
-		} else if formatted[index] >= 'A' && formatted[index] <= 'Z' {
-			formatted[index] += 'a' - 'A'
-		} else if formatted[index] < 'a' || formatted[index] > 'z' {
+	runes := []rune(strings.ToLower(s))
+	for _, r := range runes {
+		if r < 'a' || r > 'z' {
 			return ""
 		}
 	}
-	return string(formatted)
+	runes[0] -= 'a' - 'A'
+	return string(runes)
 }
 
 func saisiePrenom() string {
 	for {
-		fmt.Print("Entre ton prénom (lettres uniquement, première majuscule) : ")
-		var saisie string
-		fmt.Scanln(&saisie)
+		fmt.Print("Entre ton prenom (lettres uniquement) : ")
+		saisie := readLine()
 		nom := Isformated(saisie)
 		if nom != "" {
 			return nom
 		}
-		fmt.Println("Prénom invalide.")
+		fmt.Println("Prenom invalide.")
 	}
 }
 
 func création_perso() Character {
-	classe := []string{"netrunner", "merc", "cyberpsycho"}
-	classe_choisie := ""
-	classeValide := false
+	fmt.Println("\n========================================")
+	fmt.Println("          CREATION DU PERSONNAGE")
+	fmt.Println("========================================")
 
-	for !classeValide {
-		fmt.Println("Choisis une classe :")
-		fmt.Println("1 -", classe[0])
-		fmt.Println("2 -", classe[1])
-		fmt.Println("3 -", classe[2])
-		fmt.Scanln(&classe_choisie)
+	var classe string
+	for {
+		fmt.Println("\nChoisis une classe :")
+		fmt.Println("1 - Netrunner   (80 PV)")
+		fmt.Println("2 - Mercenaire  (100 PV)")
+		fmt.Println("3 - Cyberpsycho  (120 PV)")
+		fmt.Print("Choix : ")
 
-		if classe_choisie == "1" {
-			classe_choisie = classe[0]
-			classeValide = true
-		}
-		if classe_choisie == "2" {
-			classe_choisie = classe[1]
-			classeValide = true
-		}
-		if classe_choisie == "3" {
-			classe_choisie = classe[2]
-			classeValide = true
-		}
-		if !classeValide {
+		switch readInt() {
+		case 1:
+			classe = "netrunner"
+		case 2:
+			classe = "merc"
+		case 3:
+			classe = "cyberpsycho"
+		default:
 			fmt.Println("Choix invalide.")
+			continue
 		}
+		break
 	}
 
-	pv := 120
-	if classe_choisie == "netrunner" {
+	pv := 100
+	switch classe {
+	case "netrunner":
 		pv = 80
+	case "cyberpsycho":
+		pv = 120
 	}
-	if classe_choisie == "merc" {
-		pv = 100
-	}
-
-	nom := saisiePrenom()
 
 	perso := initCharacter(
-		nom,
-		classe_choisie,
-		1,
-		pv/2,
-		pv,
+		saisiePrenom(), classe, 1, pv, pv,
 		[]Object{
 			Resource{nom: "Ferraille", quantité: 10, quantité_max: 99},
 			Resource{nom: "Composants", quantité: 4, quantité_max: 99},
@@ -108,157 +100,208 @@ func création_perso() Character {
 		100,
 	)
 
-	// Équipement de départ selon la classe
-	if classe_choisie == "merc" {
-		perso.weapon = Melee{
-			nom: "Épée de mercenaire",
-			dmg: 12,
-		}
-
-		perso.weapon2 = Ranged{
-			nom: "Pistolet",
-			dmg: 8,
-		}
-	}
-
-	if classe_choisie == "netrunner" {
-		perso.spellbook = SpellBook{
-		}
-	}
-
-	if classe_choisie == "cyberpsycho" {
-		perso.weapon = Ranged{
-			nom: "Gros calibre gauche",
-			dmg: 15,
-		}
-
-		perso.weapon2 = Ranged{
-			nom: "Gros calibre droit",
-			dmg: 15,
-		}
+	switch classe {
+	case "merc":
+		perso.weapon = Melee{nom: "Epee de mercenaire", dmg: 12}
+		perso.weapon2 = Ranged{nom: "Pistolet", dmg: 8}
+	case "netrunner":
+		perso.spellbook = createSpellBook(Spell{nom: "Cyberdeck"})
+	case "cyberpsycho":
+		perso.weapon = Ranged{nom: "Gros calibre gauche", dmg: 15}
+		perso.weapon2 = Ranged{nom: "Gros calibre droit", dmg: 15}
 	}
 
 	return perso
 }
 
+func readLine() string {
+	line, err := inputReader.ReadString('\n')
+	if err != nil && len(line) == 0 {
+		return ""
+	}
+	return strings.TrimSpace(line)
+}
+
+func readInt() int {
+	value, err := strconv.Atoi(readLine())
+	if err != nil {
+		return -1
+	}
+	return value
+}
+
+func pause() {
+	fmt.Print("\nAppuie sur Entree pour continuer...")
+	readLine()
+}
+
 func main() {
-	statue := "menu"
 	perso := création_perso()
 	marketObjets := initMarket()
 	charcudocObjets := initCharcudoc()
 
-	for statue != "EXIT" {
-		fmt.Println(menu)
+	for perso.Hp() > 0 {
+		fmt.Println()
+		fmt.Print(menu)
 		fmt.Print("Choix : ")
 
-		if _, err := fmt.Scanln(&statue); err != nil {
-			break
-		}
-
-		if statue == "1" {
+		switch readInt() {
+		case 1:
 			fmt.Print(charactinfoMenu(perso))
-			fmt.Println("\nAppuyez sur Entrée pour revenir au menu.")
-			var pause int
-			fmt.Scanln(&pause)
-			statue = ""
-			continue
-		}
-		if statue == "2" {
-			for {
-				fmt.Println(marketMenu(marketObjets, perso))
-				var choixMarket int
-				fmt.Print("Choix : ")
-				if _, err := fmt.Scanln(&choixMarket); err == nil {
-					if choixMarket == 5 {
-						break
-					}
-					if choixMarket == len(marketObjets.liste_offres)+1 {
-						continue
-					}
-					if choixMarket >= 1 && choixMarket <= len(marketObjets.liste_offres) {
-						_, message := marketObjets.buy(&perso, choixMarket)
-						fmt.Println(message)
-					} else {
-						fmt.Println("Choix invalide.")
-					}
-					if choixMarket == 4 {
-						if perso.maxslots == 40 {
-							fmt.Println("Sacoche déjà augmentée au maximum")
-						} else {
-							perso.upgradeInventorySlot()
-						}
-					}
-				}
-			}
-			statue = ""
-			continue
-		}
+			pause()
 
-		if statue == "3" {
-			for {
-				fmt.Println(charcudocMenu(charcudocObjets, perso))
-				var choixCharcudoc int
-				fmt.Print("Choix : ")
-				if _, err := fmt.Scanln(&choixCharcudoc); err == nil {
-					if choixCharcudoc == 4 {
-						break
-					}
-					if choixCharcudoc == len(charcudocObjets.liste_offres)+1 {
-						continue
-					}
-					if choixCharcudoc >= 1 && choixCharcudoc <= len(charcudocObjets.liste_offres) {
-						_, message := charcudocObjets.buy(&perso, choixCharcudoc)
-						fmt.Println(message)
-					} else {
-						fmt.Println("Choix invalide.")
-					}
-				}
-			}
-			statue = ""
-			continue
-		}
+		case 2:
+			openMarket(&perso, &marketObjets)
 
-		if statue == "4" {
-			for perso.Hp() > 0 {
-				monstre := initGoblin()
+		case 3:
+			openCharcudoc(&perso, &charcudocObjets)
 
-				victoire := combat(&perso, monstre)
+		case 4:
+			openGang(&perso)
 
-				if !victoire {
-					break
-				}
+		case 5:
+			openInventory(&perso)
 
-				fmt.Println("\nVoulez-vous continuer le combat ?")
-				fmt.Println("1 - Continuer")
-				fmt.Println("2 - Retour au quartier")
-				fmt.Print("Choix : ")
+		case 6:
+			fmt.Println("\nFin de partie. A bientot !")
+			return
 
-				var choixCombat string
-				fmt.Scanln(&choixCombat)
-
-				if choixCombat != "1" {
-					break
-				}
-			}
-		}
-
-		if statue == "5" {
-			perso.accessInventory()
-		}
-
-		if statue == "6" {
-			statue = "EXIT"
-		}
-
-		if statue != "1" &&
-			statue != "2" &&
-			statue != "3" &&
-			statue != "4" &&
-			statue != "5" &&
-			statue != "6" {
-			fmt.Println("Choix invalide : entre un nombre entre 1 et 6.")
+		default:
+			fmt.Println("Choix invalide : entre 1 et 6.")
 		}
 	}
 
-	fmt.Println("Au revoir !")
+	fmt.Println("\n========================================")
+	fmt.Println("              FIN DE PARTIE")
+	fmt.Println("========================================")
+}
+
+func openMarket(perso *Character, market *Market) {
+	for {
+		fmt.Println(marketMenu(*market, *perso))
+		fmt.Print("Choix : ")
+		choice := readInt()
+
+		if choice == 5 {
+			return
+		}
+		if choice < 1 || choice > len(market.liste_offres) {
+			fmt.Println("Choix invalide.")
+			continue
+		}
+
+		if choice == 4 {
+			if perso.maxslots >= 40 {
+				fmt.Println("La sacoche est deja au maximum.")
+				continue
+			}
+			if perso.money < 30 {
+				fmt.Println("Pas assez d'argent.")
+				continue
+			}
+			perso.money -= 30
+			perso.upgradeInventorySlot()
+			fmt.Printf("Sacoche amelioree ! Capacite : %d objets.\n", perso.maxslots)
+			continue
+		}
+
+		_, message := market.buy(perso, choice)
+		fmt.Println(message)
+	}
+}
+
+func openCharcudoc(perso *Character, market *Market) {
+	for {
+		fmt.Println(charcudocMenu(*market, *perso))
+		fmt.Print("Choix : ")
+		choice := readInt()
+		if choice == 4 {
+			return
+		}
+		if choice < 1 || choice > len(market.liste_offres) {
+			fmt.Println("Choix invalide.")
+			continue
+		}
+		_, message := market.buy(perso, choice)
+		fmt.Println(message)
+	}
+}
+
+func openInventory(perso *Character) {
+	for {
+		fmt.Println("\n========================================")
+		fmt.Println("               INVENTAIRE")
+		fmt.Printf("Cases : %d/%d\n", len(perso.inventaire), perso.maxslots)
+		fmt.Println("========================================")
+
+		if len(perso.inventaire) == 0 {
+			fmt.Println("Inventaire vide.")
+		} else {
+			for i, object := range perso.inventaire {
+				fmt.Printf("%2d - %s\n", i+1, object.Nom())
+			}
+		}
+
+		fmt.Println("\n0 - Retour")
+		fmt.Println("Choisis un objet pour l'utiliser/equiper.")
+		fmt.Print("Choix : ")
+		choice := readInt()
+		if choice == 0 {
+			return
+		}
+		if choice < 1 || choice > len(perso.inventaire) {
+			fmt.Println("Choix invalide.")
+			continue
+		}
+
+		useInventoryObject(perso, choice-1)
+	}
+}
+
+func useInventoryObject(perso *Character, index int) {
+	object := perso.inventaire[index]
+
+	switch item := object.(type) {
+	case Armure:
+		perso.equipArmor(item)
+		fmt.Printf("%s equipe.\n", item.Nom())
+	case Potion:
+		before := perso.Hp()
+		perso.TakePot(item)
+		fmt.Printf("%s utilisee : +%d PV.\n", item.Nom(), perso.Hp()-before)
+	case Item:
+		fmt.Printf("%s ne peut pas etre utilise ici.\n", item.Nom())
+	default:
+		fmt.Println("Cet objet n'est pas utilisable ici.")
+	}
+}
+
+func openGang(perso *Character) {
+	for {
+		fmt.Println("\n========================================")
+		fmt.Println("             GUERRE DE GANG")
+		fmt.Println("========================================")
+		fmt.Println("1 - Patrouille : 1 a 3 ennemis")
+		fmt.Println("2 - Affronter le boss")
+		fmt.Println("3 - Retour au quartier")
+		fmt.Print("Choix : ")
+
+		switch readInt() {
+		case 1:
+			enemies := randomGang()
+			won := combatGroupe(perso, enemies)
+			if !won {
+				return
+			}
+		case 2:
+			won := combatGroupe(perso, []Monster{initBoss1()})
+			if !won {
+				return
+			}
+		case 3:
+			return
+		default:
+			fmt.Println("Choix invalide.")
+		}
+	}
 }

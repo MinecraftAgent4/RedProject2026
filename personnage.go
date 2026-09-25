@@ -23,24 +23,24 @@ type Character struct {
 
 type Equipement struct {
 	helmet Armure
-	torso Armure 
-	boots Armure
+	torso  Armure
+	boots  Armure
 }
 
 func (c Character) armorValue() int {
-    total := 0
+	total := 0
 
-   if c.equipe.helmet != nil {
-        total += c.equipe.helmet.Defense()
-    }
-    if c.equipe.torso != nil {
-        total += c.equipe.torso.Defense()
-    }
-    if c.equipe.boots != nil {
-        total += c.equipe.boots.Defense()
-    }
+	if c.equipe.helmet != nil {
+		total += c.equipe.helmet.Defense()
+	}
+	if c.equipe.torso != nil {
+		total += c.equipe.torso.Defense()
+	}
+	if c.equipe.boots != nil {
+		total += c.equipe.boots.Defense()
+	}
 
-    return total
+	return total
 }
 
 func (c *Character) equipArmor(piece Armure) {
@@ -56,25 +56,25 @@ func (c *Character) equipArmor(piece Armure) {
 		return
 	}
 
-	 c.inventaire = append(
-        c.inventaire[:emplacement_inv],
-        c.inventaire[emplacement_inv+1:]..., 
-	 )
+	c.inventaire = append(
+		c.inventaire[:emplacement_inv],
+		c.inventaire[emplacement_inv+1:]...,
+	)
 
 	switch armure := piece.(type) {
-	case Casque : 
-			if c.equipe.helmet != nil {
-				c.inventaire = append(c.inventaire, c.equipe.helmet)
-     	    }
-       		 c.equipe.helmet = armure
+	case Casque:
+		if c.equipe.helmet != nil {
+			c.inventaire = append(c.inventaire, c.equipe.helmet)
+		}
+		c.equipe.helmet = armure
 
-	case Plastron :
+	case Plastron:
 		if c.equipe.torso != nil {
 			c.inventaire = append(c.inventaire, c.equipe.torso)
 		}
 		c.equipe.torso = armure
 
-	case Bottes :
+	case Bottes:
 		if c.equipe.boots != nil {
 			c.inventaire = append(c.inventaire, c.equipe.boots)
 		}
@@ -136,7 +136,7 @@ func (c *Character) TakePot(p Potion) {
 
 func (c *Character) accessInventory() {
 	for i, objet := range c.inventaire {
-		fmt.Println(i + 1, "- "+objet.Nom())
+		fmt.Println(i+1, "- "+objet.Nom())
 	}
 	var objetChoisi int
 	fmt.Scanln(&objetChoisi)
@@ -148,10 +148,10 @@ func (c *Character) accessInventory() {
 	if armure, ok := objett.(Armure); ok {
 		c.equipArmor(armure)
 		return
-	} 
+	}
 	if potion, ok := objett.(Potion); ok {
 		c.TakePot(potion)
-	}else {
+	} else {
 		fmt.Println("L'objet sélectionné n'est pas utilisable")
 	}
 }
