@@ -6,6 +6,7 @@ type Monster struct {
 	pv_actuelle int
 	weapon      Arme
 	armor       Armure
+	moneyReward int
 }
 
 type Entity interface {
