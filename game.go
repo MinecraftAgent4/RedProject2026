@@ -20,6 +20,7 @@ type mapCharacter struct {
 	animation *Animation
 }
 
+
 func game() {
 	rl.InitWindow(1440, 810, "RedProject")
 	rl.SetTargetFPS(60)
@@ -394,3 +395,4 @@ func touchesBlockSide(player rl.Rectangle, block rl.Rectangle) bool {
 func overlapsX(first rl.Rectangle, second rl.Rectangle) bool {
 	return first.X < second.X+second.Width && first.X+first.Width > second.X
 }
+
